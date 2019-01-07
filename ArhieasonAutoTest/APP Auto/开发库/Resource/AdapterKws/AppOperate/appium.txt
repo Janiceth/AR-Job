@@ -1,0 +1,97 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           OperatingSystem
+Library           String
+Library           Collections
+Library           Process
+
+*** Keywords ***
+打开应用
+    [Arguments]    ${device}    ${url}    ${appinfo}    # app包名
+    Open Application    ${url}    platformName=${device.platformName}    platformVersion=${device.platformVersion}    deviceName=192.168.56.101:5555    app=${appinfo.appPath}    appPackage=${appinfo.packageName}
+    ...    appActivity=${appinfo.activity}
+    Wait Until Element Is Visible    id=com.idealsee.yixun:id/iv_frag_tip_message    15    页面加载超时,15秒内没有完成首页加载
+    ${dpis}=    获取屏幕分辨率    ${device}
+
+启动AppiumServer
+    [Arguments]    ${port}=5723    ${udid}=${None}    ${force}=${False}    ${logfile}=${None}
+    Run Keyword If    ${force}==${True}    关闭AppiumServer    ${port}
+    清除设备日志    ${udid}
+    Start Process    appium --udid ${udid} -a 127.0.0.1 -p ${port} --log ${logfile} --no-reset    shell=True    cwd=E:/    stderr=STDOUT    stdout=STDOUT
+    Sleep    5
+    ${url}=    Set Variable    http://localhost:${port}/wd/hub
+    [Return]    ${url}
+
+关闭AppiumServer
+    [Arguments]    ${port}
+    ${pid}=    获取AppiumServer    ${port}
+    ${output}=    OperatingSystem.run    "taskkill /pid ${pid} /f"
+
+获取AppiumServer
+    [Arguments]    ${port}
+    ${output}=    OperatingSystem.run    "netstat -ano|findstr ${port}.*LISTENING"
+    @{words}=    Split String    ${output}    ${SPACE}
+    ${pid}=    Get From List    ${words}    -1
+    Log    ${pid}
+    [Return]    ${pid}
+
+清除设备日志
+    [Arguments]    ${udid}    # 设备唯一标识号
+    #清除logcat日志
+    OperatingSystem.run    "adb -s ${udid} logcat -c"
+
+获取adb进程
+    @{pid_list}=    Create List
+    ${output}=    OperatingSystem.run    tasklist /NH |findstr adb.exe
+    @{words}=    Split String    ${output}    \n
+    : FOR    ${word}    IN    @{words}
+    \    @{adbparams}=    Split String    ${word}
+    \    ${pid}=    Get From List    ${adbparams}    1
+    \    Append To List    ${pid_list}    ${pid}
+    [Return]    ${pid_list}
+
+结束进程
+    [Arguments]    ${pid}
+    OperatingSystem.run    "taskkill /pid ${pid} /f"
+
+获取toast
+    [Arguments]    ${udid}    ${timeout}=10
+    ${adb_list1}=    开始捕获toast    ${udid}
+    sleep    ${timeout}
+    ${toast_list}    停止捕获toast    ${adb_list1}
+    [Return]    ${toast_list}
+
+开始捕获toast
+    [Arguments]    ${udid}
+    @{adb_list1}=    获取adb进程
+    Start Process    adb.exe -s ${udid} shell uiautomator events > ${OUTPUT DIR}${/}event.txt    shell=True    cwd=c:/    stderr=STDOUT    stdout=STDOUT    alias=process1
+    [Return]    ${adb_list1}
+
+停止捕获toast
+    [Arguments]    ${adb_list1}
+    Get Process Id    process1
+    Terminate Process    process1    kill=true
+    @{adb_list2}=    获取adb进程
+    : FOR    ${adbpid}    IN    @{adb_list2}
+    \    ${passed}=    Get Index From List    ${adb_list1}    ${adbpid}
+    \    Run Keyword If    '${passed}'=='-1'    结束进程    ${adbpid}
+    ${content}=    Grep File    ${OUTPUT DIR}${/}event.txt    Toast
+    @{content_list}=    Split String    ${content}    \n
+    @{toast_list}=    Create List
+    : FOR    ${contentline}    IN    @{content_list}
+    \    @{content_words}=    Get Regexp Matches    ${contentline}    Text:${SPACE}\\[(.*?)\\];    1
+    \    ${length}=    Get Length    ${content_words}
+    \    Run Keyword If    ${length}>0    Append To List    ${toast_list}    ${content_words[0]}
+    [Return]    ${toast_list}
+
+获取屏幕分辨率
+    [Arguments]    ${device}
+    #获取第一个FrameLayout大小作为设备屏幕分辨率
+    &{dpis}=    Get Element Size    class=android.widget.FrameLayout
+    Set To Dictionary    ${device}    height    ${dpis.height}
+    Set To Dictionary    ${device}    width    ${dpis.width}
+
+提取logcat日志
+    [Arguments]    ${udid}    ${file}    ${rewrite}=${True}
+    Run Keyword If    ${rewrite}==${True}    OperatingSystem.run    "adb -s ${udid} logcat -d > ${file}"
+    ...    ELSE    OperatingSystem.run    "adb -s ${udid} logcat -d >> ${file}"

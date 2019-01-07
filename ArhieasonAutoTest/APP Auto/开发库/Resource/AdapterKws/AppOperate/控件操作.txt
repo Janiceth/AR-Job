@@ -1,0 +1,199 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           OperatingSystem
+Library           String
+Library           Collections
+Library           Process
+
+*** Keywords ***
+点击
+    [Arguments]    ${locator}    ${ignoreexist}=${False}    ${timeout}=15
+    [Documentation]    点击元素
+    ...    | 输入参数 | locator | 元素定位 |
+    ...    | | ignoreexist | 不存在则忽略点击,不发生断言失败 |
+    ...    | | timeout | 等待元素可见的超时时间 |
+    ...    | 输出参数 | \ |
+    ...    例如:
+    ...
+    ...    点击id为com.idealsee.yixun:id/tv_frag_menu_import_pic的元素
+    ...    | 点击 | id=com.idealsee.yixun:id/tv_frag_menu_import_pic |
+    ...    点击class为android.widget.Button的元素
+    ...    | 点击 | class=android.widget.Button |
+    ...    点击xpath为//android.widget.ListView/android.widget.LinearLayout的元素
+    ...    | 点击 | xpath=//android.widget.ListView/android.widget.LinearLayout |
+    ...    如果存在网络提示弹框则点击确认按钮,按钮id为com.idealsee.yixun:id/tv_dlg_connection_alert_ok
+    ...    | 点击 | id=com.idealsee.yixun:id/tv_dlg_connection_alert_ok | ${True} |
+    ...
+    ...    locator元素定位方式:
+    ...    | Strategy | Example | Description | Note |
+    ...    | identifier | identifier=my_element | Matches by @id attribute |
+    ...    | id | id=my_element | Matches by @resource-id attribute |
+    ...    | accessibility_id | accessibility_id=button3 | Accessibility options utilize |
+    ...    | xpath | xpath=//UIATableView/UIATableCell/UIAButton | Matches with arbitrary XPath |
+    ...    | class | class=UIAPickerWheel | Matches by class |
+    ...    | android | android=UiSelector().description('Apps') | Matches by Android UI Automator |
+    ...    | ios | ios=.buttons().withName('Apps') | Matches by iOS UI Automation |
+    ...    | css | css=.green_button | Matches by css in webview |
+    ...
+    ...    作者:
+    ...    | zhouzhi | 20167/3/20 | 新建 |
+    ${existed}=    Run Keyword And Return Status    Wait Until Element Is Visible    ${locator}    ${timeout}
+    Capture Page Screenshot
+    Run Keyword If    ${ignoreexist}==${False} and ${existed}==${False}    Fail    元素${locator}不存在，点击失败
+    ...    ELSE IF    ${ignoreexist}==${True} and ${existed}==${False}    Log    元素${locator}不存在，忽略点击
+    ...    ELSE IF    ${existed}    Click Element    ${locator}
+
+滑动
+    [Arguments]    ${start_x}    ${start_y}    ${offset_x}    ${offset_y}    ${dureation}=500
+    [Documentation]    在屏幕上滑动
+    ...    | 输入参数 | start_x | 滑动起始x坐标 |
+    ...    | | start_y | 滑动起始y坐标 |
+    ...    | | offset_x | 滑动x坐标偏移量,appium1.5之前表示滑动目标x坐标 |
+    ...    | | offset_y | 滑动y坐标偏移量,appium1.5之前表示滑动目标y坐标 |
+    ...    | | dureation | 滑动时间,默认值500毫秒 |
+    ...    | 输出参数 | \ |
+    ...
+    ...    例如:
+    ...    从(x,y)=(100,200)滑动到(x,y)=(100,400)
+    ...    appium1.5之前用法:
+    ...    | 滑动 | 100 | 200 | 100 | 400 |
+    ...    appium1.5及之后用法:
+    ...    | 滑动 | 100 | 200 | 0 | 200 |
+    截图
+    Swipe    ${start_x}    ${start_y}    ${offset_x}    ${offset_y}    ${dureation}
+    截图
+
+长按
+    [Arguments]    ${locator}
+    [Documentation]    长按元素
+    ...    | 输入参数 | locator | 元素定位 |
+    ...    | 输出参数 | \ |
+    ...
+    ...    例如:
+    ...    | 长按 | id=com.idealsee.yixun:id/tv_shared_title |
+    Long Press    ${locator}
+
+按键
+    [Arguments]    ${keycode}    ${metastate}=${None}
+    [Documentation]    发送Android模拟按键组合
+    ...
+    ...    电话键
+    ...
+    ...    | KEYCODE_CALL | 拨号键 | 5 |
+    ...    | KEYCODE_ENDCALL | 挂机键 | 6 |
+    ...    | KEYCODE_HOME | 按键Home | 3 |
+    ...    | KEYCODE_MENU | 菜单键 | 82 |
+    ...    | KEYCODE_BACK | 返回键 | 4 |
+    ...    | KEYCODE_SEARCH | 搜索键 | 84 |
+    ...    | KEYCODE_CAMERA | 拍照键 | 27 |
+    ...    | KEYCODE_FOCUS | 拍照对焦键 | 80 |
+    ...    | KEYCODE_POWER | 电源键 | 26 |
+    ...    | KEYCODE_NOTIFICATION | 通知键 | 83 |
+    ...    | KEYCODE_MUTE | 话筒静音键 | 91 |
+    ...    | KEYCODE_VOLUME_MUTE | 扬声器静音键 | 164 |
+    ...    | KEYCODE_VOLUME_UP | 音量增加键 | 24 |
+    ...    | KEYCODE_VOLUME_DOWN | 音量减小键 | 25 |
+    ...    控制键
+    ...    | KEYCODE_ENTER | 回车键 | 66 |
+    ...    | KEYCODE_ESCAPE | ESC键 | 111 |
+    ...    | KEYCODE_DPAD_CENTER | 导航键 | 确定键 | 23 |
+    ...    | KEYCODE_DPAD_UP | 导航键 | 向上 | 19 |
+    ...    | KEYCODE_DPAD_DOWN | 导航键 | 向下 | 20 |
+    ...    | KEYCODE_DPAD_LEFT | 导航键 | 向左 | 21 |
+    ...    | KEYCODE_DPAD_RIGHT | 导航键 | 向右 | 22 |
+    ...    | KEYCODE_MOVE_HOME | 光标移动到开始键 | 122 |
+    ...    | KEYCODE_MOVE_END | 光标移动到末尾键 | 123 |
+    ...    | KEYCODE_PAGE_UP | 向上翻页键 | 92 |
+    ...    | KEYCODE_PAGE_DOWN | 向下翻页键 | 93 |
+    ...    | KEYCODE_DEL | 退格键 | 67 |
+    ...    | KEYCODE_FORWARD_DEL | 删除键 | 112 |
+    ...    | KEYCODE_INSERT | 插入键 | 124 |
+    ...    | KEYCODE_TAB | Tab键 | 61 |
+    ...    | KEYCODE_NUM_LOCK | 小键盘锁 | 143 |
+    ...    | KEYCODE_CAPS_LOCK | 大写锁定键 | 115 |
+    ...    | KEYCODE_BREAK | Break/Pause键 | 121 |
+    ...    | KEYCODE_SCROLL_LOCK | 滚动锁定键 | 116 |
+    ...    | KEYCODE_ZOOM_IN | 放大键 | 168 |
+    ...    | KEYCODE_ZOOM_OUT | 缩小键 | 169 |
+    ...
+    ...    组合键
+    ...
+    ...    | KEYCODE_ALT_LEFT | Alt+Left |
+    ...    | KEYCODE_ALT_RIGHT | Alt+Right |
+    ...    | KEYCODE_CTRL_LEFT | Control+Left |
+    ...    | KEYCODE_CTRL_RIGHT | Control+Right |
+    ...    | KEYCODE_SHIFT_LEFT | Shift+Left |
+    ...    | KEYCODE_SHIFT_RIGHT | Shift+Right |
+    ...
+    ...    基本
+    ...
+    ...    | KEYCODE_0 | 按键'0' | 7 |
+    ...    | KEYCODE_1 | 按键'1' | 8 |
+    ...    | KEYCODE_2 | 按键'2' | 9 |
+    ...    | KEYCODE_3 | 按键'3' | 10 |
+    ...    | KEYCODE_4 | 按键'4' | 11 |
+    ...    | KEYCODE_5 | 按键'5' | 12 |
+    ...    | KEYCODE_6 | 按键'6' | 13 |
+    ...    | KEYCODE_7 | 按键'7' | 14 |
+    ...    | KEYCODE_8 | 按键'8' | 15 |
+    ...    | KEYCODE_9 | 按键'9' | 16 |
+    ...    | KEYCODE_A | 按键'A' | 29 |
+    ...    | KEYCODE_B | 按键'B' | 30 |
+    ...    | KEYCODE_C | 按键'C' | 31 |
+    ...    | KEYCODE_D | 按键'D' | 32 |
+    ...    | KEYCODE_E | 按键'E' | 33 |
+    ...    | KEYCODE_F | 按键'F' | 34 |
+    ...    | KEYCODE_G | 按键'G' | 35 |
+    ...    | KEYCODE_H | 按键'H' | 36 |
+    ...    | KEYCODE_I | 按键'I' | 37 |
+    ...    | KEYCODE_J | 按键'J' | 38 |
+    ...    | KEYCODE_K | 按键'K' | 39 |
+    ...    | KEYCODE_L | 按键'L' | 40 |
+    ...    | KEYCODE_M | 按键'M' | 41 |
+    ...    | KEYCODE_N | 按键'N' | 42 |
+    ...    | KEYCODE_O | 按键'O' | 43 |
+    ...    | KEYCODE_P | 按键'P' | 44 |
+    ...    | KEYCODE_Q | 按键'Q' | 45 |
+    ...    | KEYCODE_R | 按键'R' | 46 |
+    ...    | KEYCODE_S | 按键'S' | 47 |
+    ...    | KEYCODE_T | 按键'T' | 48 |
+    ...    | KEYCODE_U | 按键'U' | 49 |
+    ...    | KEYCODE_V | 按键'V' | 50 |
+    ...    | KEYCODE_W | 按键'W' | 51 |
+    ...    | KEYCODE_X | 按键'X' | 52 |
+    ...    | KEYCODE_Y | 按键'Y' | 53 |
+    ...    | KEYCODE_Z | 按键'Z' | 54 |
+    Press Keycode    ${keycode}    ${metastate}
+
+输入
+    [Arguments]    ${locator}    ${text}
+    [Documentation]    在可输入元素中输入文本
+    ...    | 输入参数 | locator | 元素定位 |
+    ...    | | text | 输入文本内容 |
+    ...    | 输出参数 | \ |
+    ...
+    ...    例如:
+    ...    | ${微信搜索}= | 微信分享.搜索输入框 |
+    ...    | 输入 | ${微信搜索} | 传输助手 |
+    Input Text    ${locator}    ${text}
+
+截图
+    [Documentation]    当前屏幕截图
+    ...    | 输入参数 | 无 |
+    ...    | 输出参数 | 无 |
+    ...
+    ...    例如:
+    ...    | 截图 |
+    Capture Page Screenshot
+
+点击坐标
+    [Arguments]    ${x}    ${y}    ${duration}=100
+    [Documentation]    点击坐标
+    ...    | 输入参数 | x | width坐标 |
+    ...    | \ | y | height坐标 |
+    ...    | \ | duration | 持续时间,单位:毫秒,默认值100毫秒 |
+    ...    | 输出参数 | \ |
+    ...
+    ...    例如:
+    ...    | 点击坐标 | 200 | 200 |
+    Click A Point    ${x}    ${y}    ${duration}

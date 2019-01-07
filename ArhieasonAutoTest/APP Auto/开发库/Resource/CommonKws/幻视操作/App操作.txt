@@ -1,0 +1,90 @@
+*** Settings ***
+Resource          ../common.txt
+Resource          ../adapter_load.robot
+
+*** Keywords ***
+获取当前activity
+    ${activity}=    Get Activity
+    [Return]    ${activity}
+
+滑动至顶端
+    [Arguments]    ${height}    ${width}
+    ${start_x}=    Evaluate    ${width}/2
+    ${start_y}=    Evaluate    ${height}/3*1
+    #在Appium1.5之前${offset_y}为目标坐标end_y,之后为移动偏移量
+    ${offset_y}=    Evaluate    ${height}/3*2
+    ${pagesource1}=    Get Source
+    滑动    ${start_x}    ${start_y}    ${start_x}    ${offset_y}
+    ${pagesource}=    Get Source
+    : FOR    ${time}    IN RANGE    10
+    \    ${status}=    Run Keyword And Return Status    Should Be Equal As Strings    ${pagesource1}    ${pagesource}
+    \    Exit For Loop If    ${status}
+    \    ${pagesource1}=    Get Source
+    \    滑动    ${start_x}    ${start_y}    0    ${offset_y}
+    \    ${pagesource}=    Get Source
+
+滑动至底端
+    [Arguments]    ${height}    ${width}
+    ${start_x}=    Evaluate    ${width}/2
+    ${start_y}=    Evaluate    ${height}/3*2
+    #在Appium1.5之前${offset_y}为目标坐标end_y,之后为移动偏移量
+    ${offset_y}=    Evaluate    ${height}/3*1
+    ${pagesource1}=    Get Source
+    滑动    ${start_x}    ${start_y}    ${start_x}    ${offset_y}
+    ${pagesource}=    Get Source
+    : FOR    ${time}    IN RANGE    10
+    \    ${status}=    Run Keyword And Return Status    Should Be Equal As Strings    ${pagesource1}    ${pagesource}
+    \    Exit For Loop If    ${status}
+    \    ${pagesource1}=    Get Source
+    \    滑动    ${start_x}    ${start_y}    0    ${offset_y}
+    \    ${pagesource}=    Get Source
+
+向上滑动
+    [Arguments]    ${height}    ${width}
+    [Documentation]    从下向上滑动
+    ...    | 输入参数 | height | 屏幕分辨率高度 |
+    ...    | | width | 屏幕分辨率宽度 |
+    ...    | 输出参数 | status | 滑动结果,取值范围:True/False,为True表示滑动改变了屏幕内容;为False表示滑动没有改变内容, 即滑动到了底端 |
+    ${start_x}=    Evaluate    ${width}/2
+    ${start_y}=    Evaluate    ${height}/3*2
+    #在Appium1.5之前${offset_y}为目标坐标end_y,之后为移动偏移量
+    ${offset_y}=    Evaluate    ${height}/3*1
+    ${pagesource1}=    Get Source
+    滑动    ${start_x}    ${start_y}    ${start_x}    ${offset_y}
+    ${pagesource}=    Get Source
+    ${status}=    Run Keyword And Return Status    Should Not Be Equal As Strings    ${pagesource1}    ${pagesource}
+    [Return]    ${status}
+
+向下滑动
+    [Arguments]    ${height}    ${width}
+    ${start_x}=    Evaluate    ${width}/2
+    ${start_y}=    Evaluate    ${height}/3*1
+    #在Appium1.5之前${offset_y}为目标坐标end_y,之后为移动偏移量
+    ${offset_y}=    Evaluate    ${height}/3*2
+    ${pagesource1}=    Get Source
+    滑动    ${start_x}    ${start_y}    ${start_x}    ${offset_y}
+    ${pagesource}=    Get Source
+    ${status}=    Run Keyword And Return Status    Should Not Be Equal As Strings    ${pagesource1}    ${pagesource}
+    [Return]    ${status}
+
+滑动至元素可见
+    [Arguments]    ${locator}    ${height}    ${width}
+    #滑动至顶端    ${height}    ${width}
+    ${exist_status}=    Run Keyword And Return Status    Page Should Contain Element    ${locator}
+    Run Keyword If    ${exist_status}==${False}    滑动至顶端    ${height}    ${width}
+    : FOR    ${time}    IN RANGE    10
+    \    ${exist_status}=    Run Keyword And Return Status    Page Should Contain Element    ${locator}
+    \    Run Keyword If    ${exist_status}==${False}    向上滑动    ${height}    ${width}
+    \    Continue For Loop If    ${exist_status}==${False}
+    \    &{location}=    Get Element Location    ${locator}
+    \    ${status}=    Run Keyword If    ${location.y}<0    Run Keyword And Return Status    向下滑动    ${height}
+    \    ...    ${width}
+    \    ...    ELSE IF    ${location.y}>${height}    Run Keyword And Return Status    向上滑动    ${height}
+    \    ...    ${width}
+    \    ...    ELSE    Return From Keyword
+    \    Run Keyword If    ${status}==${False}    Fail    滑动后未找到元素${locator}
+    Run Keyword If    ${exist_status}==${False}    Fail    滑动后未找到元素${locator}
+
+向左滑动
+
+向右滑动

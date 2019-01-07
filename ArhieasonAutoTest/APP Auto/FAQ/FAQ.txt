@@ -1,0 +1,3 @@
+1.替换adb.js文件到%Appium安装路径%\node_modules\appium\node_modules\appium-adb\lib；如D:\Appium\node_modules\appium\node_modules\appium-adb\lib\
+2.替换_element.py到%python安装路径%\Lib\site-packages\AppiumLibrary\keywords\下；如C:\Python27\Lib\site-packages\AppiumLibrary\keywords
+3.替换_android_utils.py到%python安装路径%\Lib\site-packages\AppiumLibrary\keywords

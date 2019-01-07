@@ -1,0 +1,43 @@
+*** Settings ***
+Library           String
+Library           Collections
+Library           RequestsLibrary
+
+*** Keywords ***
+Step
+    [Arguments]    ${message}
+    Log    ${message}
+
+获取时间
+    ${time} =    Get Time
+    ${time}=    Replace String    ${time}    ${SPACE}    _
+    ${return_time}=    Replace String    ${time}    :    _
+    [Return]    ${return_time}
+
+get_variable
+    Run Keyword And Ignore Error    Log    ${CURDIR}
+    Run Keyword And Ignore Error    Log    ${TEMPDIR}
+    Run Keyword And Ignore Error    Log    ${EXECDIR}
+    Run Keyword And Ignore Error    Log    ${TEST NAME}
+    Run Keyword And Ignore Error    Log    ${SUITE SOURCE}
+    Run Keyword And Ignore Error    Log    ${REPORT FILE}
+    Run Keyword And Ignore Error    Log    ${TEST NAME}
+    Run Keyword And Ignore Error    Log    ${TEST DOCUMENTATION}
+    Run Keyword And Ignore Error    Log    ${TEST STATUS}
+    Run Keyword And Ignore Error    Log    ${TEST MESSAGE}
+    Run Keyword And Ignore Error    Log    ${PREV TEST NAME}
+    Run Keyword And Ignore Error    Log    ${PREV TEST STATUS}
+    Run Keyword And Ignore Error    Log    ${PREV TEST MESSAGE}
+    Run Keyword And Ignore Error    Log    ${SUITE NAME}
+    Run Keyword And Ignore Error    Log    ${SUITE SOURCE}
+    Run Keyword And Ignore Error    Log    ${SUITE DOCUMENTATION}
+    Run Keyword And Ignore Error    Log    ${SUITE STATUS}
+    Run Keyword And Ignore Error    Log    ${SUITE MESSAGE}
+    Run Keyword And Ignore Error    Log    ${KEYWORD STATUS}
+    Run Keyword And Ignore Error    Log    ${KEYWORD MESSAGE}
+    Run Keyword And Ignore Error    Log    ${LOG LEVEL}
+    Run Keyword And Ignore Error    Log    ${OUTPUT FILE}
+    Run Keyword And Ignore Error    Log    ${LOG FILE}
+    Run Keyword And Ignore Error    Log    ${REPORT FILE}
+    Run Keyword And Ignore Error    Log    ${DEBUG FILE}
+    Run Keyword And Ignore Error    Log    ${OUTPUT DIR}

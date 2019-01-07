@@ -1,0 +1,51 @@
+*** Settings ***
+Resource          ../adapter_load.robot
+Resource          ../幻视页面/_幻视页面.robot
+
+*** Keywords ***
+元素存在
+    [Arguments]    ${locator}    ${status}=${True}
+    [Documentation]    检查当前页元素存在.
+    ...    如果status为True,元素存在则断言成功,反之断言失败
+    ...    如果status为False,元素不存在则断言成功,反之断言失败
+    ...    | 输入参数 | locator | 元素定位 |
+    ...    | | status | 存在状态,取值范围:True/False |
+    ...    | 输出参数 | |
+    ...
+    ...    示例:
+    ...    | ${locator}= | 帮助页面.进入条 |
+    ...    | 元素存在 | ${locator} |
+    Run Keyword If    ${status}==${False}    Page Should Not Contain Element    ${locator}
+    ...    ELSE    Page Should Contain Element    ${locator}
+
+文本检查
+    [Arguments]    ${locator}    ${text}    ${expected}=相等
+    [Documentation]    检查元素text属性值
+    ...    | 输入参数 | locator | 元素定位 |
+    ...    | \ | text | 期望文本值 |
+    ...    | \ | expected | 对比关系,取值范围:相等/不等/包含 |
+    ...    | 输出参数 | \ |
+    ...
+    ...    示例:
+    ...    | ${AR互动游戏}= | 帮助页面.AR互动游戏 |
+    ...    | 文件检查 | ${AR互动游戏} | AR互动游戏 | 包含 |
+    Run Keyword If    '${expected}'=='不相等'    Element Should Not Contain Text    ${locator}    ${text}
+    ...    ELSE IF    '${expected}'=='相等'    Element Text Should Be    ${locator}    ${text}
+    ...    ELSE IF    '${expected}'=='包含'    Element Should Contain Text    ${locator}    ${text}
+
+元素可见
+    [Arguments]    ${locator}
+    [Documentation]    检查元素存在,且displayed属性为True,且元素大小大于0
+    ${status1}=    Run Keyword And Return Status    Element Attribute Should Match    ${locator}    displayed    ${True}
+    Run Keyword If    ${status1}==${False}    Fail    元素${locator}不可见
+    &{elementsize}=    Get Element Size    ${locator}
+    ${status2}=    Evaluate    ${elementsize.height}>0 \ and ${elementsize.width}>0
+    Run Keyword If    ${status2}==${False}    Fail    元素${locator}大小为0
+
+元素不可见
+    [Arguments]    ${locator}
+    ${status1}=    Run Keyword And Return Status    Element Attribute Should Match    ${locator}    displayed    ${True}
+    Run Keyword If    ${status1}==${False}    Return From Keyword
+    &{elementsize}=    Get Element Size    ${locator}
+    ${status2}=    Evaluate    ${elementsize.height}>0 \ and ${elementsize.width}>0
+    Run Keyword If    ${status2}    Fail    元素可见且元素大小不为0
