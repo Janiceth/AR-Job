@@ -1,0 +1,42 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+天气入口
+
+天气界面展示
+    [Setup]    测试脚本初始化    ${DEVICE}
+    ${AR天气入口}    首页.AR天气入口
+    点击    ${AR天气入口}
+    验证AR天气页展示
+    Comment    ${天气截图按钮}    AR天气.天气截图按钮
+    Comment    ${天气录制按钮}    AR天气.天气录制按钮
+    Comment    ${天气分享按钮}    AR天气.天气分享按钮
+    Comment    元素存在    id=com.idealsee.yixun:id/btn_weather_close    #返回按钮
+    Comment    元素存在    id=com.idealsee.yixun:id/btn_weather_add    #定位按钮
+    Comment    元素存在    id=com.idealsee.yixun:id/tv_weather_page_location    #城市信息
+    Comment    元素存在    id=com.idealsee.yixun:id/btn_frag_weather_photo    #自动定位标识
+    Comment    元素存在    id=com.idealsee.yixun:id/ci_weather_page_indicator    #城市切换
+    Comment    元素存在    id=com.idealsee.yixun:id/tv_weather_tmp    #天气温度
+    Comment    元素存在    id=com.idealsee.yixun:id/iv_weather_icon    #天气状态icon
+    Comment    元素存在    id=com.idealsee.yixun:id/tv_weather_txt    #天气状态
+    Comment    元素存在    id=com.idealsee.yixun:id/tv_weather_pm_icon    #PM2.5 Icon
+    Comment    元素存在    id=com.idealsee.yixun:id/tv_weather_pm    #PM2.5 数值
+    Comment    元素存在    ${天气截图按钮}    #录制按钮
+    Comment    元素存在    ${天气录制按钮}    #截图按钮
+    sleep    2s
+    向上滑动    1080    1920
+    sleep    2s
+    元素存在    id=com.idealsee.yixun:id/vv_weather_detail_title    #天气详情分割线
+    元素存在    id=com.idealsee.yixun:id/vv_weather_detail_background    #分时天气模块
+    [Teardown]    测试脚本清理    ${DEVICE}
+
+更多天气信息
+
+切换城市
+
+退出进入AR天气

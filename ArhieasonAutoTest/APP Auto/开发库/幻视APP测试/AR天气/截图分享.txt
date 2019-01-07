@@ -1,0 +1,69 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+天气截图
+
+截图界面展示
+
+天气截图分享失效
+
+AR天气截图分享
+    [Setup]    测试脚本初始化    ${DEVICE}
+    ${AR天气入口}=    首页.AR天气入口
+    点击    ${AR天气入口}
+    ${AR天气截图}=    AR天气.天气截图按钮
+    点击    ${AR天气截图}
+    ${天气分享}=    AR天气.天气分享按钮
+    点击    ${天气分享}
+    ${微信朋友分享}=    AR天气.微信朋友按钮
+    点击    ${微信朋友分享}
+    sleep    5
+    ${搜索}=    微信分享.搜索输入框
+    点击    ${搜索}
+    input text    ${搜索}    janice
+    点击    id=com.tencent.mm:id/j2
+    点击    id=com.tencent.mm:id/abg
+    点击    id=com.tencent.mm:id/abf
+    ${朋友圈分享}=    AR天气.朋友圈按钮
+    点击    ${朋友圈分享}
+    点击    id=com.tencent.mm:id/gd
+    ${微博分享}=    AR天气.微博按钮
+    点击    ${微博分享}
+    点击    id=com.sina.weibo:id/titleSave
+    [Teardown]    测试脚本清理    ${DEVICE}
+
+退出AR截图分享页
+    [Documentation]    用例名称： 分享模块_功能_退出AR天气分享页_03
+    ...
+    ...    前置条件：
+    ...    1.链接wifi
+    ...    2.AR天气截屏10张
+    ...
+    ...    操作步骤：
+    ...    1.AR天气截图之后进入天气分享页
+    ...    2.点击返回键
+    ...    3.进入天气分享页
+    ...    4.分享截图至微信朋友
+    ...    5.点击返回键
+    [Setup]    测试脚本初始化    ${DEVICE}
+    ${AR天气入口}=    首页.AR天气入口
+    点击    ${AR天气入口}
+    ${AR天气截图}=    AR天气.天气截图按钮
+    点击    ${AR天气截图}
+    ${天气分享}=    AR天气.天气分享按钮
+    点击    ${天气分享}
+    ${微信朋友分享}=    AR天气.微信朋友按钮
+    点击    ${微信朋友分享}
+    点击    id=com.tencent.mm:id/gw
+    点击    id=com.idealsee.yixun:id/ib_shared_return
+    点击    id=com.idealsee.yixun:id/btn_weather_close
+    [Teardown]    测试脚本清理    ${DEVICE}
+
+预览天气截图
+    [Setup]    测试脚本初始化    ${DEVICE}
+    [Teardown]    测试脚本清理    ${DEVICE}

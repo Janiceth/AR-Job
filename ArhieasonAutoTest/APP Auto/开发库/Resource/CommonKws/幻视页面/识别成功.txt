@@ -1,0 +1,32 @@
+*** Keywords ***
+主题名称
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_ar_title_theme
+    [Return]    ${locator}
+
+主题作者头像
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_title_author_icon
+    [Return]    ${locator}
+
+全屏
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_bottom_fullscreen
+    [Return]    ${locator}
+
+分享
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_bottom_default_share
+    [Return]    ${locator}
+
+录像
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_bottom_record
+    [Return]    ${locator}
+
+截屏
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_bottom_capscreen
+    [Return]    ${locator}
+
+收藏
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_ar_bottom_favor
+    [Return]    ${locator}
+
+数据下载
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_ar_title_tip
+    [Return]    ${locator}

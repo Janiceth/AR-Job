@@ -1,0 +1,31 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+意见反馈
+    [Documentation]    ${OUTPUT_DIR}/${time}
+    [Setup]    测试脚本初始化    ${DEVICE}
+    ${菜单.展开按钮}    菜单.展开按钮
+    点击    ${菜单.展开按钮}
+    ${菜单.设置}    菜单.设置
+    点击    ${菜单.设置}
+    ${菜单.设置.意见反馈}    设置页面.意见反馈
+    点击    ${菜单.设置.意见反馈}
+    ${意见反馈.发送}    意见反馈.button_发送
+    点击    ${意见反馈.发送}
+    #点击无效，toast提示
+    Sleep    2
+    ${邮箱QQ}    input_邮箱QQ
+    输入    ${邮箱QQ}    306875630
+    点击    ${意见反馈.发送}
+    #内容不完整，toast提示
+    Sleep    2
+    ${反馈意见}    input_反馈意见
+    输入    ${反馈意见}    hello world
+    点击    ${意见反馈.发送}
+    元素存在    ${菜单.设置.意见反馈}
+    [Teardown]    测试脚本清理    ${DEVICE}

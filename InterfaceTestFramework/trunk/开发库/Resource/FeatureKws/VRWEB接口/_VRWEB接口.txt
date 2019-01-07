@@ -1,0 +1,3 @@
+*** Settings ***
+Resource          环境初始化.txt
+Resource          应用商店接口/_应用商店接口.txt

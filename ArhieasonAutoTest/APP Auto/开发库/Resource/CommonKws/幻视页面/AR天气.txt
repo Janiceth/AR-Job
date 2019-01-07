@@ -1,0 +1,99 @@
+*** Settings ***
+Documentation     幻视AR天气相关页面
+
+*** Keywords ***
+天气截图按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/btn_frag_weather_photo
+    [Return]    ${locator}
+
+天气录制按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_weather_record
+    [Return]    ${locator}
+
+微信朋友按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_shared_share_weixin
+    [Return]    ${locator}
+
+朋友圈按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_shared_share_pyq
+    [Return]    ${locator}
+
+微博按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_shared_share_weibo
+    [Return]    ${locator}
+
+天气返回按钮
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/btn_weather_close
+    [Return]    ${locator}
+
+自动定位icon
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/iv_weather_page_position
+    [Return]    ${locator}
+
+城市名
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_weather_page_location
+    [Return]    ${locator}
+
+切换城市icon
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/ci_weather_page_indicator
+    [Return]    ${locator}
+
+添加城市按钮
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/btn_weather_add
+    [Return]    ${locator}
+
+温度
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_weather_tmp
+    [Return]    ${locator}
+
+天气状态
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/ll_weather_brief_icon
+    [Return]    ${locator}
+
+PM2.5icon
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_weather_pm_icon
+    [Return]    ${locator}
+
+PM2.5值
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_weather_pm
+    [Return]    ${locator}
+
+天气详情分割线
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/vv_weather_detail_title
+    [Return]    ${locator}
+
+分时天气
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_hourly_time
+    [Return]    ${locator}
+
+分时天气icon
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/iv_hourly_icon
+    [Return]    ${locator}
+
+分时天气温度
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_hourly_tmp
+    [Return]    ${locator}
+
+未来天气日期
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_daily_time_day
+    [Return]    ${locator}
+
+未来天气icon
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/iv_daily_icon
+    [Return]    ${locator}
+
+未来天气状态
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tv_daily_weather
+    [Return]    ${locator}
+
+未来天气昼温
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tgv_daily_day
+    [Return]    ${locator}
+
+未来天气夜温
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/tgv_daily_night
+    [Return]    ${locator}
+
+天气分享按钮
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/btn_frag_weather_share
+    [Return]    ${locator}

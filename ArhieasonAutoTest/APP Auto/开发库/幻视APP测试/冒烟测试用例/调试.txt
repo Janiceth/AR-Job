@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Test Cases ***
+test
+    Click A Point    400    200

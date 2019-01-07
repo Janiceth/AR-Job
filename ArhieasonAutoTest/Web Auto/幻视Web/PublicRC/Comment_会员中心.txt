@@ -1,0 +1,7 @@
+*** Variables ***
+${jpgDir}         E://AR-测试数据/JPG/    #jpg图片dir
+${pngDir}         E:/AR-测试数据/PNG/    #PNG图片地址
+${gifDir}         E:/AR-测试数据/GIF/    #GIF图片地址
+${MP3Dir}         E:/AR-测试数据/MP3/
+${MP4Dir}         E:/AR-测试数据/JPG/
+${3DDir}          E:/AR-测试数据/3D模型/

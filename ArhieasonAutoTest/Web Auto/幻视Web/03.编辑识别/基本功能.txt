@@ -1,0 +1,179 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Test Cases ***
+01.名称修改
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+02.分类修改
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+03.内容简介
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+04.时间限制设置
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+05位置限制设置
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+06.添加电话信息
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+07.添加官网信息
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+08.添加位置信息
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+09.附近搜索
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+10.添加导购信息
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+11.添加视频信息
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser

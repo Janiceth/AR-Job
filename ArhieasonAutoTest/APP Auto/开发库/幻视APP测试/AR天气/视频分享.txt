@@ -1,0 +1,17 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+天气视频录制
+
+视频分享界面展示
+
+天气视频分享
+
+天气视频分享失效
+
+预览天气视频

@@ -1,0 +1,21 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+相机扫描
+
+相册导入
+    [Arguments]    ${device}    ${index}=0
+    [Documentation]    从系统相册中导入一张识别图片
+    ${locator}=    菜单.展开按钮
+    点击    ${locator}
+    ${locator}=    菜单.识别相册图片
+    点击    ${locator}
+    ${locator}=    网络提示.确认按钮
+    点击    ${locator}    ${True}    5
+    #Wait Activity    .MediaPickerActivity    10
+    ${current_activity}    Get Activity
+    Capture Page Screenshot
+    相册.选择    ${device.deviceType}    ${index}
+    sleep    5
+    Capture Page Screenshot

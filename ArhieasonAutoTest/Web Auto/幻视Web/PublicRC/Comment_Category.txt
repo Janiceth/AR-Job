@@ -1,0 +1,7 @@
+*** Variables ***
+${CreateCategory}    //span[@class='icon-add']    #点击添加分类
+${ClickCategoryName}    xpath=//a[@class="editor-name"][text()='${CategoryName}']    #点击自定义的分类名称
+${ClickDropdownFlag}    xpath=//a[text()="${CategoryName}"]/../div/button/span    #指定分类的小三角
+${ClickCategoryDelete}    xpath=//a[text()="${CategoryName}"]/../div/ul/li/a[text()='删除']    #点击删除按钮
+${InputCategoryName}    xpath=//input[@placeholder="请输入分类名称"]    #输入分类名称
+${ClickButtonOK}    //button[@class='btn-submit'][text()='确定']    #点击确定按钮

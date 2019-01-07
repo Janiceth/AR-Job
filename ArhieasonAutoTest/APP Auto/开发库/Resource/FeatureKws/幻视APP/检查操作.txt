@@ -1,0 +1,3 @@
+*** Keywords ***
+检查toast
+    [Arguments]    ${text}    ${timeout}=10

@@ -1,0 +1,5 @@
+*** Settings ***
+Resource          ../../CommonKws/幻视操作/_幻视操作.robot
+Resource          ../../CommonKws/幻视页面/_幻视页面.robot
+Resource          ../../CommonKws/幻视检查/_幻视检查.robot
+Resource          ../../CommonKws/common.txt

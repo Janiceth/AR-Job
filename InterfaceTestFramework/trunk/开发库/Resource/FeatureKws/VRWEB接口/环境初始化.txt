@@ -1,0 +1,12 @@
+*** Settings ***
+Resource          ../../../Resource/AdapterKws/数据库操作/mongo/operation.txt
+Resource          ../../../Resource/CommonKws/数据库接口.txt
+
+*** Keywords ***
+环境初始_数据库初始
+    [Arguments]    &{db}
+    连接数据库    &{db}
+
+环境初始_数据库清理
+    [Arguments]    &{db}
+    断开数据库

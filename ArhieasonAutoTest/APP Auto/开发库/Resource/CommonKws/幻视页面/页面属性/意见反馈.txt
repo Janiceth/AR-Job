@@ -1,0 +1,12 @@
+*** Keywords ***
+button_发送
+    ${locator}    Set Variable    com.idealsee.yixun:id/btn_feed_done
+    [Return]    ${locator}
+
+input_邮箱QQ
+    ${locator}    Set Variable    com.idealsee.yixun:id/et_feed_info
+    [Return]    ${locator}
+
+input_反馈意见
+    ${locator}    Set Variable    com.idealsee.yixun:id/et_feed_content
+    [Return]    ${locator}

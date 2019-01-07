@@ -1,0 +1,20 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+识别分享测试
+    [Documentation]    ${OUTPUT_DIR}/${time}
+    [Setup]    测试脚本初始化    ${DEVICE}
+    相册导入    ${DEVICE}
+    验证识别成功
+    识别完成.进入分享
+    识别完成.验证分享页面完整
+    识别完成.进入微信分享
+    识别完成.验证微信分享页面完整
+    识别完成.退出微信分享
+    识别完成.验证分享页面完整
+    [Teardown]    测试脚本清理    ${DEVICE}

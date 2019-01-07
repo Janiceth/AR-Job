@@ -1,0 +1,5 @@
+*** Settings ***
+Library           Remote    10.0.0.160:8270    WITH NAME    remote1    # 包含Selenium2Library,MongoDBLibrary,RequestsLibrary
+
+*** Variables ***
+&{a}              ip    10.0.0.229    port    27018

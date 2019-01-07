@@ -1,0 +1,20 @@
+*** Keywords ***
+弹框
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/inc_frag_ar_scan_failed
+    [Return]    ${locator}
+
+标题
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_tip_top_text_result
+    [Return]    ${locator}
+
+内容
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_tip_top_text_more
+    [Return]    ${locator}
+
+取消按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/btn_frag_tip_top_text_close
+    [Return]    ${locator}
+
+重新扫描
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/btn_frag_tip_top_text_rescan
+    [Return]    ${locator}

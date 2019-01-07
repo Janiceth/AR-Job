@@ -1,0 +1,161 @@
+*** Settings ***
+Documentation     2017-08-25 \ author：田花
+...
+...               1.登录幻视首页作为测试套；
+...               2.测试用例执行完后，关闭浏览器；
+Suite Setup       Login_oltest    tianhua    tianhua
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Library           SendKeys
+Library           AutoItLibrary
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicRC/Comment_统计.txt    # 统计分析时间过滤
+Resource          ../PublicKW/统计分析.txt
+Resource          ../PublicKW/CommentKW.txt
+
+*** Test Cases ***
+001.作品分析-时间过滤
+    [Documentation]    2017-8-25 Author：田花
+    ...
+    ...    1.累计作品统计
+    ...    2.昨日作品统计
+    ...    3.最近7天作品统计
+    ...    4.最近30天作品统计
+    ...    5.指定时间范围作品统计：昨天之前，包括昨天，包括今天，今天
+    log    【点击跳转至统计分析页】
+    页面跳转    ${StatisticalAnalysis}
+    sleep    1s
+    log    【查询作品累计统计数据】
+    累计查询
+    log    【查询作品昨日统计数据】
+    昨日数据统计
+    log    【查询作品最近7天统计数据】
+    最近7天统计
+    log    【查询作品最近30天统计数据】
+    最近30天统计
+
+002.作品分析-指定时间不正确
+
+003.作品分析-作品搜索
+    [Documentation]    2017-8-31 Author：田花
+    ...    1.统计页面搜索账号下作品，精确搜索、模糊搜索
+    log    【点击跳转至统计分析页】
+    页面跳转    ${StatisticalAnalysis}
+    sleep    1s
+    log    【作品名称关键字查询】
+    搜索    ${SA_SearchInput}    视频    ${StatisSearchButton}
+    验证搜索结果    本地视频
+
+004.作品分析-作品搜索异常
+    log    【点击跳转至统计分析页】
+    页面跳转    ${StatisticalAnalysis}
+    sleep    1s
+    log    【作品名称关键字查询】
+    搜索    ${SA_SearchInput}    3840@L##L    ${StatisSearchButton}
+    验证搜索结果    本地视频
+
+005.作品分析-列表排序
+    log    【点击跳转至统计分析页】
+    页面跳转    ${StatisticalAnalysis}
+    sleep    1s
+    log    【按日期排序】
+    ${a}    Get Element Attribute    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[3]/table/thead/tr/th[2]/span[2]
+    #Click Element
+
+006.作品分析-列表翻页
+
+0031.作品分析-作品搜索
+    [Documentation]    2017-8-31 Author：田花
+    ...    1.统计页面搜索账号下作品，精确搜索、模糊搜索
+    #跳转至统计页面
+    Click link    ${StatisticalAnalysis}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${SA_SearchInput}
+    Run Keyword If    ${status}==True    log    跳转到统计分析页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    1s
+    # 作品名称关键字查询
+    Click Element    ${SA_SearchInput}
+    sleep    1s
+    Input text    ${SA_SearchInput}    视频
+    sleep    1s
+    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[2]/div/div/div/span
+    sleep    1s
+    #验证查询结果
+    ${t}    Evaluate    random.randint(0,19)    random    # Evaluate导入random模块，获取随机数
+    ${s}    Get Webelements    xPath=//*[@id="tbody"]
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Table Should Contain    xPath=//*[@id="tbody"]
+    ...    视频    \    #第一列
+    Run Keyword If    ${status}==True    Return From Keyword
+    Comment    ${t}    Evaluate    random.randint(0,19)    random    # Evaluate导入random模块，获取随机数
+    Comment    ${s}    Get Webelements    xPath=//*[@id="tbody"]    \    \    ${EMPTY}
+    ...    //*[@id="tbody"]
+    Comment    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Wait Until Element Is Visible
+    ...    ${s}
+    Comment    Run Keyword If    ${status}==True    log    作品搜索成功
+    ...    ELSE    fail    未搜索到作品
+    Capture Page Screenshot    Search.png
+
+0011.作品分析-时间过滤
+    [Documentation]    2017-8-25 Author：田花
+    ...
+    ...    1.累计作品统计
+    ...    2.昨日作品统计
+    ...    3.最近7天作品统计
+    ...    4.最近30天作品统计
+    ...    5.指定时间范围作品统计：昨天之前，包括昨天，包括今天，今天
+    #跳转至统计分析页
+    Click link    ${StatisticalAnalysis}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${SA_SearchInput}
+    Run Keyword If    ${status}==True    log    跳转到统计分析页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    #查询作品累计统计数据
+    Click Element    ${StatisTotal}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    累计统计查询成功
+    ...    ELSE    fail    累计统计查询失败，请定位原因
+    Capture Page Screenshot    Total.png
+    #查询作品昨日统计数据
+    Click Element    ${StatisYesterday}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    昨日统计查询成功
+    ...    ELSE    fail    昨日统计查询失败，请定位原因
+    Capture Page Screenshot    Yesterday.png
+    #查询作品最近7天统计数据
+    Click Element    ${StatisLast7Days}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    最近7天统计查询成功
+    ...    ELSE    fail    最近7天统计查询失败，请定位原因
+    Capture Page Screenshot    7Days.png
+    #查询作品最近30天统计数据
+    Click Element    ${StatisLast30Days}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    最近30天统计查询成功
+    ...    ELSE    fail    最近30天统计查询失败，请定位原因
+    Capture Page Screenshot    30Days.png
+    Comment    #查询作品指定时间范围统计数据
+    Comment    Click Element    ${StatisDingtime}
+    Comment    Input Text    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]    20170801
+    Comment    Input Text    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]    20170830
+    Comment    Click Element    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/a
+    Comment    Comment    Click Element    ${StatisDingtime}
+    Comment    Comment    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div
+    Comment    Comment    #开始时间
+    Comment    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]
+    Comment    Comment    sleep    1s
+    Comment    Comment    Assign Id To Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]    start-t
+    Comment    Comment    Execute Javascript    window.docment.getElementByClass('start-t').value='2017/08/01'
+    Comment    Comment    #结束时间
+    Comment    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]
+    Comment    Comment    sleep    1s
+    Comment    Comment    Assign Id To Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]    end-t
+    Comment    Comment    Execute Javascript    window.docment.getElementByClass('end-t').value='2017/08/31'
+    Comment    Comment    sleep    2s
+    Comment    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/a
+    Comment    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible
+    ...    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Comment    Run Keyword If    ${status}==True    log    最近指定时间范围统计查询成功
+    ...    ELSE    fail    指定时间范围统计查询失败，请定位原因

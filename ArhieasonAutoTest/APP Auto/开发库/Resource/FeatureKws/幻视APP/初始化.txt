@@ -1,0 +1,35 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+测试套初始化
+    设置设备型号
+    ${device}=    Set Variable    ${DEVICE}
+    ${suitetime}=    获取时间
+    Set Suite Variable    ${suitetime}
+    Set Suite Variable    ${suitelogcatfile}    ${OUTPUT DIR}${/}${suitetime}.log
+    #清除logcat日志
+    OperatingSystem.run    "adb -s ${device.udid} logcat -c"
+    Set To Dictionary    ${device}    suitelogcatfile    ${OUTPUT DIR}${/}${device.udid}_testsuite_${suitetime}.log
+    Set To Dictionary    ${device}    appiumlogfile    ${OUTPUT DIR}${/}${device.udid}_appium_${suitetime}.log
+    #每个设备启动一个appiumserver
+    #Run    taskkill /f /im node.exe
+    #Run    taskkill /f /im adb.exe
+    启动AppiumServer    ${device.serverport}    ${device.udid}    ${True}    ${device.appiumlogfile}
+    #提取设备Logcat日志
+    提取logcat日志    ${device.udid}    ${device.suitelogcatfile}
+
+测试脚本初始化
+    [Arguments]    ${device}
+    ${time}=    获取时间
+    OperatingSystem.run    "adb -s ${device.udid} logcat -c"
+    Set To Dictionary    ${device}    caselogcatfile    ${OUTPUT DIR}${/}${device.udid}_testcase_${time}.log
+    打开应用    ${device}    http://127.0.0.1:${device.serverport}/wd/hub    ${app1}
+
+设置设备型号
+    @{device_list}    Create List    ${device_yijia3}    ${device_xiaomi5}    ${device_nubiaz9max}    ${device_xiaomi4}    ${device_honor6}
+    ...    ${device_mate7}    ${device_mate8}    ${device_samsungnote4}    #${deviece_m3note}
+    #    ${device_samsungs6}
+    : FOR    ${device}    IN    @{device_list}
+    \    Run Keyword If    '${DEVICENAME}'=='${device.deviceName}'    Run Keywords    Set Suite Variable    ${DEVICE}    ${device}
+    \    ...    AND    Return From Keyword

@@ -1,0 +1,37 @@
+*** Settings ***
+Resource          ../../../AdapterKws/Http操作/http.txt
+Resource          ../../../CommonKws/common.txt
+Resource          ../../../Resource/CommonKws/数据库接口.txt
+
+*** Keywords ***
+获取应用详情_存在
+    [Arguments]    ${url}    ${appid}
+    #获取应用详情_存在
+    ${session}    创建Session    ${url}
+    &{headers}    Create Dictionary    Content-Type=application/x-www-form-urlencoded    device=K2
+    &{params}    Create Dictionary    app_id=${appid}
+    ${resp}    发送POST请求    ${session}    ${url}    params=${params}    headers=${headers}
+    验证_HttpCode    ${resp}    200
+    ${respdata}    RequestsLibrary.To Json    ${resp.content}
+    验证Json存在Key/Value    ${respdata}    code    200
+    ${appinfo}    Run Keyword And Continue On Failure    Get From Dictionary    ${respdata}    appinfo
+    验证Json存在Key/Value    ${appinfo}    app_id    ${appid}
+    Step    检查返回Json的key值
+    @{key_list}    Create List    app_id    app_name    logo_url    app_type    publish_date
+    ...    developer_id    developer_name    subject    content    volumn    applyDevs
+    ...    app_owned    version    version_no    package    screenshot_urls    has_inapp_pay
+    ...    comfortable
+    验证Json存在Key    ${appinfo}    @{key_list}
+
+获取应用详情_不存在
+    [Arguments]    ${url}    ${appid}=
+    #获取应用详情_不存在
+    Log    111
+    ${session}    创建Session    ${url}
+    &{headers}    Create Dictionary    Content-Type=application/x-www-form-urlencoded    device=K2
+    &{params}    Create Dictionary    app_id=${appid}
+    ${resp}    Run Keyword IF    "${appid}"==""    发送POST请求    ${session}    ${url}    headers=${headers}
+    ...    ELSE    发送POST请求    ${session}    ${url}    params=${params}    headers=${headers}
+    验证_HttpCode    ${resp}    200
+    ${respdata}    RequestsLibrary.To Json    ${resp.content}
+    验证Json存在Key/Value    ${respdata}    code    400

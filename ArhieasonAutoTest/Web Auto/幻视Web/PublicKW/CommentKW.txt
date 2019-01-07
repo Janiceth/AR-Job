@@ -1,0 +1,161 @@
+*** Settings ***
+Library           Send Keys
+Library           Selenium2Library
+Resource          ..//PublicRC/Comment_Create.txt
+Resource          ..//PublicKW/CommentKW.txt
+Resource          ..//PublicRC/Comment_Home.txt
+Resource          ..//PublicRC/Comment_Card.txt
+Resource          ..//PublicRC/Comment_Category.txt
+
+*** Keywords ***
+HomeUploadLocalFile
+    [Arguments]    ${Server_filepath}    ${filename}    ${file_suffix}    #文件路径 #文件名称 #文件后缀名
+    [Documentation]    2017-08-17 \ author：李琼
+    ...
+    ...    1.上传本地文件
+    #判断上传按钮是否存在，存在则点击上传按钮进行上传。
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${upload_button}
+    sleep    1s
+    Run Keyword If    ${status}==True    Click Element    ${upload_button}
+    sleep    1s
+    #利用SendKeys库上传本地文件
+    log    等待本地Windows弹窗出现并上传文件
+    sleep    1s
+    ${path}    Convert To Bytes    ${Server_filepath}${filename}${file_suffix}
+    Send Keys    ${path}
+    sleep    0.5s
+    Send Keys    {ENTER}
+    log    由于本地弹窗无法做校验，强制等待2S钟，如果文件太大，请延长等待时间
+    sleep    2s
+    Capture Page Screenshot
+    Input Text    //div[@class='pos-r']/input    ${filename}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    3s    Element Should Be Visible    ${SubmitButton}
+    sleep    1s
+    Run Keyword If    ${status}==True    Click Element    ${SubmitButton}
+
+CheckWorkExists
+    [Arguments]    ${HomeSearchName}    #首页搜索名称
+    [Documentation]    关键字说明：2017-08-17 \ author：李琼
+    ...
+    ...    1.判断幻视首页搜索框是否出现；
+    ...    2.输入需要查找的作品名称，进行查找；
+    ...    3.创建AR作品有延时，需要循环查找，10次循环没有找到，则创建失败；
+    ...    4.返回${status}的状态；
+    log    清空输入框再输入.
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    2s    Element Should Be Visible    ${HomeSearch}
+    Run Keyword If    ${status}==True    Clear Element Text    ${HomeSearch}
+    sleep    1s
+    Input Text    ${HomeSearch}    ${HomeSearchName}
+    : FOR    ${i}    IN RANGE    3
+    \    log    ${i}
+    \    Click Button    ${HomeSearchButton}
+    \    sleep    1s
+    \    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    1s    Wait Until Page Contains Element
+    \    ...    //span[@class='info-name'][text()='${HomeSearchName}']
+    \    Run Keyword If    ${status}==True    Exit For Loop
+    Return From Keyword    ${status}
+
+DeleteHomePicture
+    [Arguments]    ${HomeCreateName}
+    [Documentation]    关键字说明：2017-08-17 \ author：李琼
+    ...
+    ...    1.删除AR作品；
+    ...    2.删除完成后，校验是否删除成功；
+    log    点击作品卡片上的三角菜单
+    Click Element    ${MenuCard}
+    sleep    5s
+    log    判断删除按钮是否出现，出现则点击；
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    2s    Element Should Be Visible    ${DeleteAR_Card}
+    Run Keyword If    ${status}==True    Click Element    ${DeleteAR_Card}
+    ...    ELSE    fail    删除按钮没有出现，请定位原因。
+    sleep    1s
+    log    判断删除完成后确认按钮是否出现，出现则点击提交。
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    2s    Element Should Be Visible    ${DeleteSubmit_Card}
+    Run Keyword If    ${status}==True    Click Element    ${DeleteSubmit_Card}
+    ...    ELSE    fail    确认按钮没有出现，请定位原因。
+    log    校验是否删除成功
+    ${status}    CheckWorkExists    ${HomeCreateName}
+    Run Keyword If    ${status}==False    log    恭喜~删除AR作品成功！
+    ...    ELSE    fail    删除AR作品失败，请定位问题。
+
+DeleteHomeCategory
+    [Arguments]    ${CategoryName}=自动化测试    # 分类名称
+    [Documentation]    关键字说明：2017-08-18 \ author：李琼
+    ...
+    ...    1.删除指定的作品分类。
+    ...    2.弹出的删除确认框是alert类型，需要用confirm action模拟键盘输入。
+    #点击指定的分类名称,并删除
+    Click Element    xpath=//a[@class="editor-name"][text()='${CategoryName}']
+    sleep    1s
+    Click Element    xpath=//a[text()="${CategoryName}"]/../div/button/span
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    1s    Element Should Be Visible    xpath=//a[text()="${CategoryName}"]/../div/ul/li/a[text()='删除']
+    Run Keyword If    ${status}==True    Click Element    xpath=//a[text()="${CategoryName}"]/../div/ul/li/a[text()='删除']
+    sleep    2s
+    #关闭弹出的alert框
+    ${mes}    Confirm Action
+    Choose Ok On Next Confirmation    #点击确定
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    1s    Element Should Not Be Visible    xpath=//a[@class="editor-name"][text()='${CategoryName}']
+    Run Keyword If    ${status}==True    log    删除成功！
+    ...    ELSE    fail    删除失败。
+    #清空输入框后点击搜索，展示所有作品。
+    Clear Element Text    ${HomeSearch}
+    sleep    1s
+    Click Button    ${HomeSearchButton}
+
+getTablelineNumberOthers
+    [Arguments]    ${totalNumber}
+    : FOR    ${n}    IN RANGE    1000
+    \    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[3]/ul/li[4]
+    \    sleep    1 s
+    \    ${lineNumberNextPage}=    Execute Javascript    var len =$(".m_table>tbody").find("tr").length;alert(len);
+    \    ${lineNumberNextPage}=    Evaluate    int(${lineNumberNextPage})-1
+    \    Confirm Action
+    \    ${totalLineNumber}=    Evaluate    int(${totalLineNumber})+int(${lineNumberNextPage})
+    \    ${morepage}=    Get Text    xPath=//div[@id="pages"]
+    \    ${isContainNextPage}=    Evaluate    '{morePage}.find('>')
+    \    Exit For Loop If    '${isContainNextPage}'=='-1'
+    [Return]    ${totalNumber}
+
+getTableLineNumbber
+    #获取第一页的列表中的个数
+    ${lineNumberP1}=    Execute Javascript    var len =$(".opus-info>tbody").find("tr").length;return len;
+    ${lineNumberP1}=    Evaluate    int(${lineNumberP1})-1
+    Confirm Action
+    ${totalLineNumber}=    Set Variable    0
+    ${totalLineNumber}=    Set Variable    ${lineNumberP1}
+    #判断是否有下一页
+    ${morepage}=    Get Text    xPath=//div[@id="pages"]
+    ${isContainNextPage}=    Evaluate    '{morePage}.find('>')
+    #如果有下一页调用关键字来获取
+    ${totalLineNumber}=    Run Keyword If    '${isContainNextPage}'!= '-1'    getTablelineNumberOthers    ${totalLineNumber}
+    #如果没有下一页则将第一页个数返回
+    ${totalLineNumber}=    Set Variable If    '${totalLineNumber}'=='None'    ${lineNumberP1}    ${totalLineNumber}
+    [Return]    ${totalNumber}
+
+CheckWorkExistsByPic
+    [Arguments]    ${HomeSearchPic}    #首页搜索图片
+    [Documentation]    关键字说明：2017-08-17 \ author：李琼
+    ...
+    ...    1.判断幻视首页搜索框是否出现；
+    ...    2.上传需要查找的作品图片，进行查找；
+    ...    3.创建AR作品有延时，需要循环查找，10次循环没有找到，则创建失败；
+    ...    4.返回${status}的状态；
+    log    清空输入框再输入.
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    2s    Element Should Be Visible    ${HomeSearch}
+    Run Keyword If    ${status}==True    Clear Element Text    ${HomeSearch}
+    sleep    1s
+    ##Click Element    ${HomeSearchPicBtn}
+    Choose File    ${HomeSearchPicBtn}    E:\\AR-TestData\\JPG\\timg (11).jpg
+    sleep     5s
+    #Click Element    ${HomeSearchButton}
+    #Input Text    ${HomeSearch}    ${HomeSearchName}
+    :FOR    ${i}    IN RANGE    3
+    \    log    ${i}
+    \    Click Button    ${HomeSearchButton}
+    \    sleep    1s
+    \    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    1s    Wait Until Page Contains Element
+    \    ...    //span[@class='info-name'][text()='${HomeSearchName}']
+    \    Run Keyword If    ${status}==True    Exit For Loop
+    Return From Keyword    ${status}

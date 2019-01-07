@@ -1,0 +1,14 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+导出测试套日志
+    [Arguments]    ${rewrite}    @{devices}
+    :FOR    ${device}    IN    @{devices}
+    \    提取logcat日志    ${device.udid}    ${device.suitelogcatfile}
+
+导出测试脚本日志
+    [Arguments]    ${rewrite}    @{devices}
+    :FOR    ${device}    IN    @{devices}
+    \    提取logcat日志    ${device.udid}    ${device.caselogcatfile}
+    \    清除设备日志    ${device.udid}

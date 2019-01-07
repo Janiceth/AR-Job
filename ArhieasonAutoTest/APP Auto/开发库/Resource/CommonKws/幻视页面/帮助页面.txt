@@ -1,0 +1,45 @@
+*** Settings ***
+Documentation     幻视APP帮助页面
+
+*** Keywords ***
+标题
+    [Documentation]    帮助页面-标题元素定位信息
+    ...    | 输入参数 | |
+    ...    | 输出参数 | locator | 元素定位信息 |
+    ...
+    ...    例如:
+    ...    | ${locator}= | 帮助页面.标题 |
+    ...    | 点击 | ${locator} |
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/rl_web_title
+    [Return]    ${locator}
+
+进度条
+    [Documentation]    帮助页面-加载进度条元素定位信息
+    ...    | 输入参数 | |
+    ...    | 输出参数 | locator | 元素定位信息 |
+    ...
+    ...    例如:
+    ...    | ${locator}= | 帮助页面.进入条 |
+    ...    | 元素存在 | ${locator} |
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/pb_web_progress
+    [Return]    ${locator}
+
+身临其境的AR天气
+    ${locator}=    Set Variable    xpath=//android.view.View[contains(@content-desc,'身临其境的AR天气')]
+    [Return]    ${locator}
+
+发现未知信息
+    ${locator}=    Set Variable    xpath=//android.view.View[contains(@content-desc,'发现未知信息')]
+    [Return]    ${locator}
+
+AR互动游戏
+    ${locator}=    Set Variable    xpath=//android.view.View[contains(@content-desc,'AR互动游戏')]
+    [Return]    ${locator}
+
+不一样的虚实体验
+    ${locator}=    Set Variable    xpath=//android.view.View[contains(@content-desc,'不一样的虚实体验')]
+    [Return]    ${locator}
+
+webkitview
+    ${locator}=    Set Variable    class=android.webkit.WebView
+    [Return]    ${locator}

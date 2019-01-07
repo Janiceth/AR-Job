@@ -1,0 +1,30 @@
+*** Settings ***
+Resource          ../../Resource/AdapterKws/数据库操作/mongo/operation.txt
+
+*** Keywords ***
+插入记录
+
+查询记录
+    [Arguments]    ${dbName}    ${collectionName}    ${document}={}    ${columnName}=None
+    [Documentation]    查询数据库记录
+    ...    | 输入参数 | dbName | 数据库名称 |
+    ...    | | collectionName | 集合(表)名称 |
+    ...    | | document | 查询条件 |
+    ...    | | columnName | 需要返回的列,默认返回所有 |
+    ...    | 输出参数 | ${result} | 返回List类型数据 |
+    ...    例如:
+    ...
+    ...    查询test3@123.com开发者的所有应用，返回app表的所有字段
+    ...    | 查询记录 | app | app | {"developer_name":"test3@123.com"} |
+    ...    查询test3@123.com开发者的所有应用，返回app表中的_id字段
+    ...    | 查询记录 | test | test1 | {"developer_name":"test3@123.com"} | _id |
+    ...    查询test3@123.com开发者的所有应用，返回app表中的_id字段和developer_name两个字段数据
+    ...    | 查询记录 | test | test1 | {"developer_name":"test3@123.com"} | _id,developer_name |
+    ...
+    ...    作者:
+    ...    | 周智| 2016/11/10 | 新建 |
+    ${returnid_flag}    Evaluate    "_id" in "${columnName}"
+    ${result}    Run Keyword IF    ${returnid_flag}    查询Mongo记录    ${dbName}    ${collectionName}    ${document}
+    ...    ${columnName}    True
+    ...    ELSE    查询Mongo记录    ${dbName}    ${collectionName}    ${document}    ${columnName}
+    [Return]    ${result}

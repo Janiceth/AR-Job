@@ -1,0 +1,104 @@
+*** Settings ***
+Documentation     2017-08-16 \ author：李琼
+...
+...               1.登录幻视首页作为测试套；
+...               2.测试用例执行完后，关闭浏览器；
+Suite Setup       Login_waiwang    Autotest    123456
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Library           SendKeys
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicRC/Comment_EditRecognition.txt
+
+*** Test Cases ***
+001.新建AR作品进入编辑界面
+    [Documentation]    2017-08-21 \ author：李琼
+    ...
+    ...    1.登录到幻视首页，判断要新建的作品是否存在，存在则删除；
+    ...    2.新建一个AR作品，然后点击进入编辑界面，查看页面是否正常；
+    ...    3.退出编辑界面，验证是否退出成功；
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #校验该作品是不是已经存在，存在则删除。
+    ${status}    CheckWorkExists    ${UplodFileName}
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomePicture    ${UplodFileName}
+    #点击创建AR作品按钮
+    sleep    2s
+    Click Element    ${CreateNewAR}
+    #上传AR作品
+    HomeUploadLocalFile    ${ServerFilePath}    ${UplodFileName}    ${FileSuffix_png}
+    #创建AR作品完成后，搜索上传作品，校验是否上传成功。
+    ${status}    CheckWorkExists    ${UplodFileName}
+    Run Keyword If    ${status}==True    log    恭喜~创建AR作品成功！
+    ...    ELSE    fail    创建AR作品失败，请定位问题。
+    #点击新建作品，进入AR编辑界面
+    sleep    1s
+    Click Element    ${EditorCoverCard}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${EditorAR}
+    Run Keyword If    ${status}==True    log    进入编辑界面成功！
+    ...    ELSE    fail    进入编辑界面失败，请定位问题。
+    #退出编辑
+    Click Element    ${ExitEditorButton}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    退出编辑界面成功！
+    ...    ELSE    fail    退出编辑界面失败，请定位问题。
+    [Teardown]
+
+002.进入编辑AR信息界面（已经编辑过的）
+    [Documentation]    2017-08-21 \ author：李琼
+    ...
+    ...    1.登录到幻视首页，搜索存在的AR作品（该AR作品数据已经构建好的）；
+    ...    2.进入该AR作品，查看进入页面是否正确，显示是否正常；
+    ...    3.退出编辑，验证是否退出到幻视首页成功；
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #校验该作品是不是已经存在，存在则点击。
+    ${status}    CheckWorkExists    进入已编辑界面
+    Run Keyword If    ${status}==True    Click Element    ${EditorCoverCard}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    //span[text()='浮屏按键']
+    Run Keyword If    ${status}==True    log    进入编辑AR信息界面成功！
+    ...    ELSE    fail    进入编辑AR信息界面失败，请定位问题。
+    #退出编辑
+    Click Element    ${ExitEditorButton}
+    sleep    1s
+    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    [Teardown]
+
+003.编辑界面的切换
+    [Documentation]    2017-08-21 \ author：李琼
+    ...
+    ...    1.登录到幻视首页，搜索存在的AR作品（该AR作品数据已经构建好的）；
+    ...    2.进入该AR作品，查看进入页面是否正确，显示是否正常；
+    ...    3.切换【编辑识别信息】、【手机预览】、退出编辑的测试；
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #校验该作品是不是已经存在，存在则点击。
+    ${status}    CheckWorkExists    进入已编辑界面
+    Run Keyword If    ${status}==True    Click Element    ${EditorCoverCard}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${DuckweedButton}
+    Run Keyword If    ${status}==True    log    进入编辑AR信息界面成功！
+    ...    ELSE    fail    进入编辑AR信息界面失败，请定位问题。
+    log    点击【编辑识别信息】
+    sleep    1s
+    Click Element    ${EditIdentificationInformation}
+    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${SetRecognitionLimit}
+    log    点击【手机预览】
+    sleep    1s
+    Click Element    ${MobilePreview}
+    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${MobilephoneOpenAPP}
+    #退出编辑
+    sleep    1s
+    Click Element    ${ExitEditorButton}
+    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    [Teardown]

@@ -1,0 +1,9 @@
+*** Settings ***
+Resource          ../../Resource/FeatureKws/南京教育接口/_南京教育接口.txt
+Resource          ../../Resource/FeatureKws/session管理.txt
+
+*** Test Cases ***
+教师端基础信息
+    ${session}    创建session连接    http://10.0.0.191
+    教师登录    ${session}    http://10.0.0.191/api/v2/teacher/login    382733728@qq.com    123456
+    获取教师端基础信息_成功    ${session}    http://10.0.0.191/api/v2/teacher/base_info

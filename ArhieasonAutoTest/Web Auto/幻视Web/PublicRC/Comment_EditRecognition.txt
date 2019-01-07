@@ -1,0 +1,8 @@
+*** Variables ***
+${EditorAR}       //div[text()='编辑器AR']    #编辑器AR
+${ExitEditorButton}    //span[@class='text-grad'][text()='退出编辑']    #退出编辑按钮
+${DuckweedButton}    //span[text()='浮屏按键']    #浮萍按钮
+${EditIdentificationInformation}    //a[@title='编辑识别信息']    #编辑识别信息按钮
+${MobilePreview}    //a[@title='手机预览']    # 手机预览按钮
+${SetRecognitionLimit}    //span[text()='设置识别限制']    # 设置识别限制
+${MobilephoneOpenAPP}    //span[@class='help-msg-number'][text()='手机打开幻视APP']    # 打开幻视app

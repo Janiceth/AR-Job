@@ -1,0 +1,24 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+进入帮助页面
+    ${菜单展开按钮}=    菜单.展开按钮
+    ${菜单帮助}    菜单.帮助
+    ${进度条}    帮助页面.进度条
+    ${webkitview}    帮助页面.webkitview
+    ${网络确认}=    网络提示.确认按钮
+    点击    ${菜单展开按钮}
+    点击    ${菜单帮助}
+    ${network_status}=    Get Network Connection Status
+    Run Keyword If    ${network_status}==4    点击    ${网络确认}    ${True}
+    Run Keyword And Return Status    Wait Until Element Is Visible    ${进度条}    10    10秒内未出现加载进度条
+    截图
+    sleep    10
+    截图
+
+验证内容可见
+    [Arguments]    ${locator}    ${device}
+    截图
+    滑动至元素可见    ${locator}    ${device.height}    ${device.width}
+    截图

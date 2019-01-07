@@ -1,0 +1,36 @@
+*** Settings ***
+Documentation     2017-08-25 \ author：田花
+...
+...               1.登录幻视首页作为测试套；
+...               2.测试用例执行完后，关闭浏览器；
+Suite Setup       Login_oltest    tianhua    tianhua
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Library           SendKeys
+Library           AutoItLibrary
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicKW/基本操作.txt
+Resource          ../PublicRC/Comment_会员中心.txt
+
+*** Test Cases ***
+01.用户信息
+    [Documentation]    Author: 田花 \ 2017-9-27
+    ...
+    ...    用户上传头像
+    log     【打开会员中心】
+    点击    ${MemberCentre}
+    log     【打开上传头像窗口】
+    点击    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div/div[1]/div[1]/div
+    log    【打开文件选择窗口】
+    点击    xPath=//*[@id="LogoModalBody"]/div[3]/div[2]/label
+    sleep    1s
+     log     【选择文件】
+    上传文件    E:\\AR-测试数据\\JPG\\234688-13112020435052.jpg
+    log     【提交】
+    点击    xPath=//*[@id="LogoModalBody"]/div[4]/div
+
+02.安全中心
+
+03.消息列表

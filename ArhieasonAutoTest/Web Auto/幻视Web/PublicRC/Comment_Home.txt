@@ -1,0 +1,22 @@
+*** Variables ***
+${HomeSearch}     name=resource_title    #首页搜索框的name属性
+${CreateNewAR}    xpath=//span[text()='创建AR作品']    #创建AR作品
+${HomeSearchText}    搜索测试    #搜索AR作品名称
+${HomeSearchButton}    xpath=//button[@class='resource-search']    #首页搜索按钮
+${HomeAR_Item}    //span[@class='info-name'][text()='${HomeSearchText}']    #搜索出当前AR作品
+${StatisticalAnalysis}    xpath=//a[text()='统计分析']    #点击统计分析
+${SA_SearchInput}    xpath=//input[contains(@class,'search-input')]    #统计分析的搜索框
+${MemberCentre}    xpath=//a[text()='会员中心']    #点击会员中心
+${MC_ConfirmBtn}    xpath=//a[@class='confirmBtn']    #会员中心的升级和续期按钮
+${UsingHelp}      xpath=//a[text()='使用帮助']    #点击使用帮助
+${US_ReadyWork}    xpath=//div[text()='准备工作']    #使用帮助中的“准备工作”作为元素定位
+${HomeMenuBrand}    xpath=//a[contains(@class,'menu-brand')]    #Hieason图标
+${NewsIcon}       xpath=//div[@class='icon-news']    #消息通知图片
+${NewsHead}       xpath=//div[@class='news_head']    #消息列表页面定位元素
+${UserName}       xpath=//a[@class='username']    #点击用户名称
+${LogotButton}    xpath=//a[@class='logout']    #点击注销按钮
+${RightPageAction}    //li[@class='glyphicon glyphicon-menu-right page-action']    #向右翻页
+${LeftPageAction}    //li[@class='glyphicon glyphicon-menu-left page-action']    #向左翻页
+${ForwardPageAction}    //li[@class='glyphicon glyphicon-step-forward page-action']    #最后一页
+${BackwardPageAction}    //li[@class='glyphicon glyphicon-step-backward page-action']    #首页
+${PageAction-2}    //div[text()='2'][@class='page-action ']    #点击数字2

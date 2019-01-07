@@ -1,0 +1,18 @@
+*** Keywords ***
+验证_HttpCode
+    [Arguments]    ${response}    ${code}
+    Should Be Equal As Strings    ${response.status_code}    ${code}
+
+验证Json存在Key
+    [Arguments]    ${json}    @{key_list}
+    Log Many    ${json}
+    Log Many    @{key_list}
+    :FOR    ${item}    IN    @{key_list}
+    \    Dictionary Should Contain Key    ${json}    ${item}
+
+验证Json存在Key/Value
+    [Arguments]    ${json}    ${key}    ${value}
+    Log    json=${json}
+    Log    key=${key}
+    Log    value=${value}
+    Dictionary Should Contain Item    ${json}    ${key}    ${value}

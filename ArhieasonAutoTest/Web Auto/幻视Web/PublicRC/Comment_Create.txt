@@ -1,0 +1,6 @@
+*** Variables ***
+${SubmitButton}    //button[@class='button']    #提交按钮
+${upload_button}    Xpath=//*[@class='add-file' or @class='form-group img-holder']    #创建AR作品的上传图片按钮
+${ServerFilePath}    C:\\    #C盘根目录下
+${UplodFileName}    AutoTestPicture    #上传图片的名称
+${FileSuffix_png}    .png    #上传图片的后缀名

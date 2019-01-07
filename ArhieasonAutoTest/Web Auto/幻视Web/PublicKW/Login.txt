@@ -1,0 +1,59 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../PublicRC/Comment_login.txt
+Resource          ../PublicRC/Comment_Home.txt
+
+*** Keywords ***
+Login_33
+    [Arguments]    ${Account}    ${Password}    #用户名| 密码
+    #登录测试环境
+    Open Browser    ${Login_33_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${Account}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${Password}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    log    判断是否登录到幻视首页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+
+Login_oltest
+    [Arguments]    ${Account}    ${Password}    #用户名| 密码
+    #登录测试环境
+    Open Browser    ${Login_oltest_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${Account}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${Password}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    log    判断是否登录到幻视首页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+
+Login_yixun
+    [Arguments]    ${Account}    ${Password}    #用户名| 密码
+    #登录测试环境
+    Open Browser    ${Login_yixun_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${Account}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${Password}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    log    判断是否登录到幻视首页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因

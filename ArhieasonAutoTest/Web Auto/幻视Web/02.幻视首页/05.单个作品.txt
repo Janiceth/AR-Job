@@ -1,0 +1,20 @@
+*** Settings ***
+Library           Selenium2Library
+Library           SendKeys
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Card.txt
+
+*** Test Cases ***
+001.编辑AR清晰度
+    # 判断是否登录且位于首页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds
+
+002.替换识别图
+
+003.下载离线数据包
+
+004.查看作品AR效果
+
+005.查看作品预览
+
+006.跳转至作品分析页

@@ -1,0 +1,14 @@
+*** Settings ***
+Documentation     2017-8-29 Author：田花
+...
+...               1.统计分析时间过滤
+
+*** Variables ***
+${StatisTotal}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/ul/li[1]/span    # 累计统计数据
+${StatisYesterday}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/ul/li[2]/span    # 昨日统计数据
+${StatisLast7Days}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/ul/li[3]/span    #最近7天统计数据
+${StatisLast30Days}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/ul/li[4]/span    #最近30天统计数据
+${StatisDingtime}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/ul/li[5]/span    #指定时间范围内统计数据
+${StatisSearchButton}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[2]/div/div/div/span    #作品分析页搜索按钮
+${arrow_up_Btn}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[3]/table/thead/tr/th[2]/span[2]    #按升序排列
+${arrow_down_Btn}    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[3]/table/thead/tr/th[2]/span[2]    #按降序排列

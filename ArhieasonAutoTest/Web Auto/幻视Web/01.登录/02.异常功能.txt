@@ -1,0 +1,89 @@
+*** Settings ***
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          ../PublicRC/Comment_login.txt
+Resource          ../PublicRC/Comment_Home.txt
+
+*** Test Cases ***
+001.登录-用户名密码为空
+    [Documentation]    2017-08-15 \ author: 李琼
+    ...
+    ...    1.用户名和密码为空，登录验证；
+    [Setup]
+    #登录测试环境
+    log    登录被测系统
+    Open Browser    ${Login_oltest_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${EMPTY}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${EMPTY}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    1    Element Should Not Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    没有登录成功。
+    ...    ELSE    fail    登录异常~~
+    [Teardown]    close browser
+
+002.登录-密码为空
+    [Setup]
+    #登录测试环境
+    log    登录被测系统
+    Open Browser    ${Login_oltest_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${Account}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${EMPTY}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    1    Element Should \ Be Visible    ${EnterPassword}
+    Run Keyword If    ${status}==True    log    没有登录成功。
+    ...    ELSE    fail    登录异常~~
+    [Teardown]    close browser
+
+003.登录-用户名为空
+    [Setup]
+    #登录测试环境
+    log    登录被测系统
+    Open Browser    ${Login_oltest_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    ${EMPTY}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${Password}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    1    Element Should Not Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    没有登录成功。
+    ...    ELSE    fail    登录异常~~
+    [Teardown]    close browser
+
+004.登录-用户名密码不正确
+    [Setup]
+    #登录测试环境
+    log    登录被测系统
+    Open Browser    ${Login_oltest_URL}    chrome
+    Reload Page
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    ${Login_account}    342wsf34
+    sleep    0.5s
+    Input Text    ${Login_password}    2324325
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    5x    1    Element Should \ Be Visible    ${UserNotExist}
+    Run Keyword If    ${status}==True    log    没有登录成功。
+    ...    ELSE    fail    登录异常~~
+    [Teardown]    close browser

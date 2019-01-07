@@ -1,0 +1,21 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+验证识别成功
+    截图
+    ${ar_title}=    识别成功.主题名称
+    ${ar_favor}=    识别成功.收藏
+    ${locator}=    识别成功.数据下载
+    Wait Until Page Does Not Contain Element    ${locator}    20    数据下载超时
+    元素存在    ${ar_title}
+    元素存在    ${ar_favor}
+
+验证识别失败
+    截图
+    ${title}=    识别失败.标题
+    ${rescan}=    识别失败.重新扫描
+    ${locator}=    识别失败.弹框
+    Wait Until Page Contains Element    ${locator}    20    20秒内没有提示识别结果
+    文本检查    ${title}    没有识别到任何信息    包含
+    元素存在    ${rescan}    ${True}

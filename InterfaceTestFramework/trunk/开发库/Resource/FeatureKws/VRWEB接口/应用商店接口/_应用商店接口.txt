@@ -1,0 +1,3 @@
+*** Settings ***
+Resource          获取APP列表.txt
+Resource          应用详情.txt

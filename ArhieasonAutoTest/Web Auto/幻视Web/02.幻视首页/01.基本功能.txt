@@ -1,0 +1,255 @@
+*** Settings ***
+Documentation     2017-08-16 \ author：李琼
+...
+...               1.登录幻视首页作为测试套；
+...               2.测试用例执行完后，关闭浏览器；
+Suite Setup       Login_waiwang    Autotest    123456
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Library           SendKeys
+Resource          ../PublicKW/CommentKW.txt
+
+*** Test Cases ***
+001.搜索-作品名称
+    [Documentation]    2017-08-16 author：李琼
+    ...
+    ...    1.精确搜索作品名称；
+    ...    2.上传图片进行搜索；
+    log    等待输入框出现
+    Wait Until Element Is Enabled    ${HomeSearch}    5s
+    Input Text    ${HomeSearch}    ${HomeSearchText}
+    sleep    1s
+    Click Button    ${HomeSearchButton}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    3s    Wait Until Page Contains Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜你，作品名称搜索成功！
+    ...    ELSE    fail    很遗憾~搜索失败了！
+    log    清空输入框后点击搜索，展示所有作品。
+    Clear Element Text    ${HomeSearch}
+    sleep    1s
+    Click Button    ${HomeSearchButton}
+
+002.页面跳转
+    [Documentation]    2017-08-16 author: 李琼
+    ...
+    ...    1.页面跳转包括：“Hieason”图标跳转、统计分析、会员中心、使用帮助、通知、头像等；
+    #等待输入框出现
+    Wait Until Element Is Enabled    ${HomeSearch}    5s
+    #页面跳转
+    log    跳转到统计分析页面
+    Click Element    ${StatisticalAnalysis}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${SA_SearchInput}
+    Run Keyword If    ${status}==True    log    跳转到统计分析页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    1s
+    log    跳转到会员中心页面
+    Click Element    ${MemberCentre}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${MC_ConfirmBtn}
+    Run Keyword If    ${status}==True    log    跳转到会员中心页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    1s
+    log    跳转到使用帮助页面
+    Click Element    ${UsingHelp}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${US_ReadyWork}
+    Run Keyword If    ${status}==True    log    跳转到使用帮助页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    1s
+    log    点击“Hieason”图标
+    Click Element    ${HomeMenuBrand}
+    sleep    0.5s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${HomeSearchButton}
+    Run Keyword If    ${status}==True    log    跳转到幻视首页成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    0.5s
+    log    点击消息通知
+    Click Element    ${NewsIcon}
+    sleep    0.5s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    3s    Element Should Be Visible    ${NewsHead}
+    Run Keyword If    ${status}==True    log    跳转到消息列表页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    sleep    0.5s
+    log    点击用户名称
+    Click Element    ${UserName}
+    sleep    0.5s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    3s    Element Should Be Visible    ${MC_ConfirmBtn}
+    Run Keyword If    ${status}==True    log    跳转到用户信息页面成功！
+    ...    ELSE    fail    跳转失败，请定位原因
+    [Teardown]
+
+003.创建AR作品
+    [Documentation]    2017-08-17 \ author：李琼
+    ...
+    ...    1.创建AR作品前，先判断是否存在，根据返回的${status}值，true存在则删除后再上传。false不存在，可直接上传；
+    ...    2.上传AR作品后，再次校验是否上传成功。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #校验该作品是不是已经存在，存在则删除。
+    ${status}    CheckWorkExistsByName    ${UplodFileName}
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomePicture    ${UplodFileName}
+    #点击创建AR作品按钮
+    sleep    2s
+    Click Element    ${CreateNewAR}
+    #上传AR作品
+    HomeUploadLocalFile    ${ServerFilePath}    ${UplodFileName}    ${FileSuffix_png}
+    #创建AR作品完成后，搜索上传作品，校验是否上传成功。
+    ${status}    CheckWorkExistsByName    ${UplodFileName}
+    Run Keyword If    ${status}==True    log    恭喜~创建AR作品成功！
+    ...    ELSE    fail    创建AR作品失败，请定位问题。
+    [Teardown]
+
+004.删除AR作品
+    [Documentation]    2017-08-17 \ author：李琼
+    ...
+    ...    1.创建AR作品前，先判断是否存在，根据返回的${status}值，true存在则删除后再上传。false不存在，可直接上传；
+    ...    2.上传AR作品后，校验是否上传成功；
+    ...    3.删除刚刚上传的AR作品。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #校验该作品是不是已经存在，存在则删除。
+    ${status}    CheckWorkExistsByName    ${UplodFileName}
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomePicture    ${UplodFileName}
+    #点击创建AR作品按钮
+    sleep    2s
+    Click Element    ${CreateNewAR}
+    #上传AR作品
+    HomeUploadLocalFile    ${ServerFilePath}    ${UplodFileName}    ${FileSuffix_png}
+    #创建AR作品完成后，搜索上传作品，校验是否上传成功。
+    ${status}    CheckWorkExistsByName    ${UplodFileName}
+    Run Keyword If    ${status}==True    log    恭喜~创建AR作品成功！
+    ...    ELSE    fail    创建AR作品失败，请定位问题。
+    DeleteHomePicture    ${UplodFileName}
+    [Teardown]
+
+005.创建分类
+    [Documentation]    2017-08-18 author：李琼
+    ...
+    ...    1.创建分类之前，先判断分类名称是否存在，存在则删除。
+    ...    2.创建分类后需要校验是否创建成功。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #创建之前先判定
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should \ Be Visible    ${ClickCategoryName}
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomeCategory
+    sleep    1s
+    #创建作品分类
+    Wait Until Element Is Enabled    ${CreateCategory}    15s
+    Click Element    ${CreateCategory}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    ${InputCategoryName}
+    Run Keyword If    ${status}==True    Input Text    ${InputCategoryName}    自动化测试
+    Click Element    ${ClickButtonOK}
+    sleep    1s
+    #校验是否创建成功
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    xpath=//a[@class="editor-name"][text()='自动化测试']
+    Run Keyword If    ${status}==True    log    恭喜~新建分类成功！
+    ...    ELSE    fail    新建分类失败，请定位问题。
+    [Teardown]
+
+006.删除分类
+    [Documentation]    2017-08-18 author：李琼
+    ...
+    ...    1.新建一个新的作品分类，然后删除。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #创建之前先判定
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should \ Be Visible    ${ClickCategoryName}
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomeCategory
+    sleep    1s
+    #创建作品分类
+    Wait Until Element Is Enabled    ${CreateCategory}    15s
+    Click Element    ${CreateCategory}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    ${InputCategoryName}
+    Run Keyword If    ${status}==True    Input Text    ${InputCategoryName}    自动化测试
+    Click Element    ${ClickButtonOK}
+    sleep    1s
+    #校验是否创建成功
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    xpath=//a[@class="editor-name"][text()='自动化测试']
+    Run Keyword If    ${status}==True    log    恭喜~新建分类成功！
+    ...    ELSE    fail    新建分类失败，请定位问题。
+    #删除测试
+    DeleteHomeCategory
+    [Teardown]
+
+007.注销登陆
+    [Documentation]    2017-08-18 author：李琼
+    ...
+    ...    1.登录首页后，判断是否存在【注销】按钮；
+    ...    2.点击注销，再重新登录。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #等待注销按钮出现
+    Wait Until Element Is Enabled    ${LogotButton}    5s
+    log    点击注销按钮
+    Click Element    ${LogotButton}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${Login_account}
+    Run Keyword If    ${status}==True    log    恭喜~跳转到登录界面，注销成功！
+    ...    ELSE    fail    注销失败，定位原因。
+    #重新登录
+    sleep    1s
+    Input Text    ${Login_account}    ${Account}
+    sleep    0.5s
+    Input Text    ${Login_password}    ${Password}
+    sleep    0.5s
+    Click Button    ${loginBottun}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]
+
+008.首页的翻页功能
+    [Documentation]    017-08-18 \ author：李琼
+    ...
+    ...    1.翻页测试：包括< 、>、 >|、 |< 、数字翻页。
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    log    等待输入框出现
+    Wait Until Element Is Enabled    ${HomeSearch}    5s
+    log    点击>按钮
+    Click Element    ${RightPageAction}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Wait Until Page Does Not Contain Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜翻页成功！
+    ...    ELSE    fail    翻页失败。
+    log    点击<按钮
+    Click Element    ${LeftPageAction}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Wait Until Page Contains Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜翻页成功！
+    ...    ELSE    fail    翻页失败。
+    log    点击>|按钮
+    Click Element    ${ForwardPageAction}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Wait Until Page Does Not Contain Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜翻页成功！
+    ...    ELSE    fail    翻页失败。
+    log    点击|<按钮
+    Click Element    ${BackwardPageAction}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Wait Until Page Contains Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜翻页成功！
+    ...    ELSE    fail    翻页失败。
+    log    点击数字2按钮
+    Click Element    ${PageAction-2}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Wait Until Page Does Not Contain Element    ${HomeAR_Item}
+    Run Keyword If    ${status}==True    log    恭喜翻页成功！
+    ...    ELSE    fail    翻页失败。
+    [Teardown]

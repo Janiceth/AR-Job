@@ -1,0 +1,114 @@
+*** Settings ***
+Documentation     2017-08-16 \ author：李琼
+...
+...               1.登录幻视首页作为测试套；
+...               2.测试用例执行完后，关闭浏览器；
+Suite Setup       Login_waiwang    Autotest    123456
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Library           SendKeys
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicRC/Comment_EditRecognition.txt
+
+*** Test Cases ***
+001.创建AR作品中新建分类
+    #判断是否登录到幻视首页,若不在首页，点击Hieason回到主页
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    3x    2s    Element Should \ Be Visible    ${CreateNewAR}
+    Run Keyword If    ${status}==False    Click Element    ${HomeMenuBrand}
+    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${CreateNewAR}
+    #创建之前先判定
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible     xpath=//a[@class="editor-name"][text()='分类测试01']
+    Run Keyword If    ${status}==True    Run Keyword    DeleteHomeCategory    分类测试01
+    sleep    1s
+    #点击创建AR作品按钮
+    Sleep    2s
+    Click Element    ${CreateNewAR}
+    #判断作品分类是否存在，存在则点击。
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    //select[@class='select_cate']
+    Sleep    3s
+    Run Keyword If    ${status}==True    Click Element    //select[@class='select_cate']
+    ...    ELSE    fail    作品输入框不存在，请定位问题。
+    Sleep    5
+    Wait Until Element Is Visible    //option[@class='btn-show-add-cate']    5s
+    Click Element    //option[@class='btn-show-add-cate']
+    Sleep    2
+    Input Text    //input[@class='add-cate-input']    分类测试01
+    Sleep    2
+    Click Element    //span[@class='btn-add-submit']
+    Sleep    2
+    Click Element    //span[@class='icon-close']
+    Sleep    5
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    4x    2s    Element Should Be Visible    xpath=//a[@class="editor-name"][text()='分类测试01']
+    Run Keyword If    ${status}==True    log    恭喜~新建分类成功！
+    ...    ELSE    fail    新建分类失败，请定位问题。
+    [Teardown]    close browser
+
+002.分类的切换
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+003.隐藏分类菜单
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+004.创建AR作品中新建分类
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+005.重命名分类
+    Open Browser    http://oltest.yixun.idealsee.com/web/user/login    Chrome
+    Maximize Browser Window
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    id=editorForm
+    sleep    1s
+    Run Keyword If    ${status}==True    Input Text    //*[@id="editorForm"]/div[3]/div[2]/div/input    liqiong
+    sleep    0.5s
+    Input Text    //*[@id="editorForm"]/div[3]/div[3]/div/input    liqiong
+    sleep    0.5s
+    Click Button    //*[@id="editorForm"]//button
+    sleep    2s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    //*[@id="mainNode"]//button
+    Run Keyword If    ${status}==True    log    恭喜你登录成功
+    ...    ELSE    fail    登录失败，请定位原因
+    [Teardown]    close browser
+
+点v
+    [Setup]    ${abc}=123
+    [Teardown]

@@ -1,0 +1,25 @@
+*** Settings ***
+Resource          ../adapter_load.robot
+
+*** Keywords ***
+标题
+    @{elements}=    Get WebElements    class=android.widget.TextView
+    ${locator}=    Set Variable    @{elements}[0]
+    [Return]    ${locator}
+
+提示信息
+    @{elements}=    Get Webelements    class=android.widget.TextView
+    ${locator}=    Set Variable    @{elements}[1]
+    [Return]    ${locator}
+
+取消按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_dlg_connection_alert_cancel
+    [Return]    ${locator}
+
+确认按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_dlg_connection_alert_ok
+    [Return]    ${locator}
+
+弹框
+    [Documentation]    整个网络提示弹框的locator
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/ll_dlg_connection_alert

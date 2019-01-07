@@ -1,0 +1,11 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+返回首页
+    ${locator}=    菜单.展开按钮
+    :FOR    ${index}    IN RANGE    1    10
+    \    ${status}=    Run Keyword And Return Status    Page Should Contain Element    ${locator}
+    \    Exit For Loop If    ${status}
+    \    按键    4
+    \    sleep    1

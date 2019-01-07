@@ -1,0 +1,17 @@
+*** Settings ***
+Library           requests
+Library           apiclient
+Resource          ../../Resource/AdapterKws/variable.robot
+Resource          ../../Resource/FeatureKws/幻视接口/_幻视接口.txt
+Resource          ../../Resource/FeatureKws/session管理.txt
+
+*** Test Cases ***
+初始化获取unity信息
+    &{checklist}    Create Dictionary    force_update=0
+    &{headers}    Create Dictionary    User-Agent=yixun 3.0 (M578CA; Android 5.1; zh_CN)
+    &{headers_err}    Create Dictionary    User-Agent=yixun \ (M578CA; Android 5.1; zh_CN)
+    ${session}    创建session连接    http://yixun.idealsee.com/api/app/init2
+    初始化unity信息_成功    ${session}    http://yixun.idealsee.com/api/app/init2    ${headers}    ${checklist}
+    &{headers}    Create Dictionary    User-Agent=yixun 2.9 (XIAOMI; Android 5.1; zh_CN)
+    初始化unity信息_成功    ${session}    http://yixun.idealsee.com/api/app/init2    ${headers}    ${checklist}
+    初始化unity信息_失败    ${session}    http://yixun.idealsee.com/api/app/init2    400    Invalid User-Agent:version!    ${headers_err}

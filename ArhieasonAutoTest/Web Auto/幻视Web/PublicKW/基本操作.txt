@@ -1,0 +1,20 @@
+*** Settings ***
+Library           Selenium2Library
+Library           SendKeys
+Library           AutoItLibrary
+Resource          ../PublicRC/Comment_Home.txt
+
+*** Keywords ***
+点击
+    [Arguments]    ${elment}
+    Click Element    ${elment}
+
+上传文件
+    [Arguments]    ${FileDir}
+     log     【上传】
+    Win Wait    打开    \    20
+    Win Activate    \    打开
+    Control Set Text    \    \    Edit1    ${FileDir}
+     sleep    2s
+    Control Click    \    \    Button1
+    sleep    3s

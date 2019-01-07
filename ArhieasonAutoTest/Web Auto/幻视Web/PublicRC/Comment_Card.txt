@@ -1,0 +1,6 @@
+*** Variables ***
+${MenuCard}       xpath=//div[@class='btn-dropdown flag']    #卡片上的小三角按钮
+${DeleteAR_Card}    xpath=//a[text()='删除AR作品']    #删除AR作品
+${DeleteSubmit_Card}    xpath=//button[@class='btn-submit'][text()='提交']    #删除确认的提交按钮
+${EditorCoverCard}    //div[@class='editor_cover']    #卡片上的编辑按钮
+${test}           test${abc}

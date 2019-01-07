@@ -1,0 +1,16 @@
+*** Keywords ***
+返回按钮
+    ${locator}=    Set Variable    id=com.tencent.mm:id/gw
+    [Return]    ${locator}
+
+多选按钮
+    ${locator}=    Set Variable    id=com.tencent.mm:id/gd
+    [Return]    ${locator}
+
+搜索输入框
+    ${locator}=    Set Variable    id=com.tencent.mm:id/ag9
+    [Return]    ${locator}
+
+天气返回按钮
+    ${locator}    Set Variable    id=com.idealsee.yixun:id/btn_weather_close
+    [Return]    ${locator}

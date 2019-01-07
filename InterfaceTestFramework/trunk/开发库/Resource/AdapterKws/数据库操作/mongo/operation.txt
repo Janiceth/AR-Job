@@ -1,0 +1,63 @@
+*** Settings ***
+Library           pymongo
+Library           MongoDBLibrary
+Library           Collections
+Library           String
+
+*** Keywords ***
+连接数据库
+    [Arguments]    &{dbhost}
+    [Timeout]    1 minute    # 连接数据60秒超时
+    #连接Mongodb数据库
+    Run Keyword IF    "&{dbhost}[user]"==""    Connect To Mongodb    &{dbhost}[ip]    &{dbhost}[port]
+    ...    ELSE    Connect To Mongodb    mongodb://&{dbhost}[user]:&{dbhost}[password]@&{dbhost}[ip]    &{dbhost}[port]
+
+断开数据库
+    #断开Mongodb数据库
+    Disconnect From Mongodb
+
+插入记录
+    [Arguments]    ${db}    ${collection}    ${document}
+    [Timeout]
+    #插入记录
+    ${result}    Save Mongodb Records    ${db}    ${collection}    ${document}
+    [Return]    ${result}
+
+删除记录
+    [Arguments]    ${db}    ${collection}    ${document}
+    [Timeout]
+    #删除记录
+    ${result}    Remove Mongodb Records    ${db}    ${collection}    ${document}
+    [Return]    ${result}
+
+删除集合
+    [Arguments]    ${db}    ${collection}
+    #删除集合
+    Drop Mongodb Collection    ${db}    ${collection}
+
+删除数据表
+    [Arguments]    ${db}
+    #删除数据表
+    ${result}    Drop Mongodb Database    ${db}
+    [Return]    ${result}
+
+查询Mongo记录
+    [Arguments]    ${dbName}    ${collectionName}    ${document}={}    ${fields}=None    ${return_id}=False
+    #查询记录
+    ${allResults}    Run Keyword IF    "${fields}"=="None"    Retrieve Some Mongodb Records    ${dbName}    ${collectionName}    ${document}
+    ...    True
+    ...    ELSE    Retrieve Mongodb Records With Desired Fields    ${dbName}    ${collectionName}    ${document}    ${fields}
+    ...    ${return_id}    True
+    Log    ${allResults}
+    [Return]    ${allResults}
+
+生成ObjectID
+    [Arguments]    ${count}=1
+    #随机生成ObjectID
+    comment    ${objid}    get_objectid    ${10}
+    ${list_objid}    Create List
+    : FOR    ${i}    IN RANGE    0    ${count}
+    \    ${obj}    Evaluate    str(bson.objectid.ObjectId())    bson
+    \    Append To List    ${list_objid}    ${obj}
+    Log Many    ${list_objid}
+    [Return]    ${list_objid}

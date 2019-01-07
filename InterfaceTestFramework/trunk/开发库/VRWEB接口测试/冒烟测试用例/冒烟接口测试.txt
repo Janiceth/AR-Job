@@ -1,0 +1,50 @@
+*** Settings ***
+Suite Setup       环境初始_数据库初始    &{dbhost_229}    # 初始化数据库，包括数据库连接和数据插入
+Suite Teardown    环境初始_数据库清理    &{dbhost_229}    # 清理数据库，包括数据删除，重置和断开数据库连接
+Library           requests
+Library           apiclient
+Resource          ../../Resource/AdapterKws/variable.robot
+Resource          ../../Resource/FeatureKws/VRWEB接口/_VRWEB接口.txt
+
+*** Variables ***
+${webserver}      ${vrweb_228}
+
+*** Test Cases ***
+获取首页
+    [Tags]    success    fail
+    ${r}    send    GET    http://10.0.0.228
+    report    test1
+    连接数据库    &{dbhost_229}
+    ${objectid}    插入记录    test    test2    {"name":"bbfa"}
+    sleep    5
+    ${result}    删除记录    test    test2    {"_id":"${objectid}"}
+    断开数据库
+    生成ObjectID
+    Comment    ${client}    connect    ip=192.168.1.1    port=27018    user=mongo    pwd=idealsee2012
+    check_code    ${r}    500
+
+获取用户信息
+    report    tes
+
+应用详情接口测试
+    [Documentation]    【用例摘要】获取应用详细信息，用户未登录，获取应用信息成功，显示用户未拥有
+    ...
+    ...    【预置条件】应用商店中存在app_id=57fc83ce780ee20007904508de 应用
+    #从数据库中获取一条app记录的_id
+    ${records}    查询记录    dbName=app    collectionName=app    document={}    columnName=_id
+    Log    ${records[0]['_id']}
+    #验证存在app_id=_id的appinfo信息
+    获取应用详情_存在    ${webserver}/appinfo    ${records[0]['_id']}
+    #随机生成一个objectid:objectid1
+    ${objectid_list}    生成ObjectID
+    ${objectid1}    Set Variable    ${objectid_list[0]}
+    #验证不存在app_id=objectid1的app返回信息
+    获取应用详情_不存在    ${webserver}/appinfo    ${objectid1}
+    #验证不带app_id参数查询appinfo信息，提示no app id
+    获取应用详情_不存在    ${webserver}/appinfo
+
+mongo测试
+    comment    连接数据库    &{dbhost_229}
+    ${records}    查询记录    app    app    {}    _id,developer_name
+    Get Length    ${records}
+    comment    断开数据库

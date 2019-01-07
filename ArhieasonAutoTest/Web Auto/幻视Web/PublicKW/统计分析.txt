@@ -1,0 +1,92 @@
+*** Settings ***
+Library           Selenium2Library
+Library           SendKeys
+Library           AutoItLibrary
+Resource          ../PublicRC/Comment_Home.txt
+Resource          ../PublicRC/Comment_统计.txt
+
+*** Keywords ***
+页面跳转
+    [Arguments]    ${TurnElement}
+    #页面跳转
+    Click Element    ${TurnElement}
+    sleep    1s
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    ${SA_SearchInput}
+    Run Keyword If    ${status}==True    log    页面跳转成功！
+    ...    ELSE    Fail    页面跳转失败，请检查
+
+搜索
+    [Arguments]    ${SA_SearchInput}    ${input-text}    ${StatisSearchButton}
+    #【搜索】
+    Click Element    ${SA_SearchInput}
+    Input Text    ${SA_SearchInput}    ${input-text}
+    Click Element    ${StatisSearchButton}
+    Comment    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Contain
+    ...    xPath=//*[@id="tbody"]/tr[1]/td[1]/span    ${text}
+    Comment    Run Keyword If    ${status}==True    log    作品搜索成功！
+    ...    ELSE    Fail    作品搜索失败，请检查
+    [Return]    ${input-text}
+
+验证搜索结果
+    [Arguments]    ${ver-text}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Contain    xPath=//*[@id="tbody"]
+    ...    ${ver-text}
+    Run Keyword If    ${status}==True    log    作品搜索成功！
+    ...    ELSE    Fail    作品搜索失败，请检查
+    Comment    ${Search-result}    Get Webelements    xPath=//*[@id="tbody"]
+
+累计查询
+    #查询作品累计统计数据
+    Click Element    ${StatisTotal}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    累计统计查询成功
+    ...    ELSE    fail    累计统计查询失败，请定位原因
+    Capture Page Screenshot    Total.png
+
+昨日数据统计
+    #查询作品昨日统计数据
+    Click Element    ${StatisYesterday}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    昨日统计查询成功
+    ...    ELSE    fail    昨日统计查询失败，请定位原因
+    Capture Page Screenshot    Yesterday.png
+
+最近7天统计
+    #查询作品最近7天统计数据
+    Click Element    ${StatisLast7Days}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    最近7天统计查询成功
+    ...    ELSE    fail    最近7天统计查询失败，请定位原因
+    Capture Page Screenshot    7Days.png
+
+最近30天统计
+    #查询作品最近30天统计数据
+    Click Element    ${StatisLast30Days}
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    最近30天统计查询成功
+    ...    ELSE    fail    最近30天统计查询失败，请定位原因
+    Capture Page Screenshot    30Days.png
+
+指定时间统计
+    #查询作品指定时间范围统计数据
+    Click Element    ${StatisDingtime}
+    Input Text    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]    20170801
+    Input Text    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]    20170830
+    Click Element    //*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/a
+    Comment    Click Element    ${StatisDingtime}
+    Comment    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div
+    Comment    #开始时间
+    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]
+    Comment    sleep    1s
+    Comment    Assign Id To Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[1]    start-t
+    Comment    Execute Javascript    window.docment.getElementByClass('start-t').value='2017/08/01'
+    Comment    #结束时间
+    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]
+    Comment    sleep    1s
+    Comment    Assign Id To Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/input[2]    end-t
+    Comment    Execute Javascript    window.docment.getElementByClass('end-t').value='2017/08/31'
+    Comment    sleep    2s
+    Comment    Click Element    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/header/div/div/a
+    ${status}    Run Keyword And Return Status    Wait Until Keyword Succeeds    10x    3s    Element Should Be Visible    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div/div[2]/div[1]/table/thead/tr/th[4]/span[1]
+    Run Keyword If    ${status}==True    log    最近指定时间范围统计查询成功
+    ...    ELSE    fail    指定时间范围统计查询失败，请定位原因

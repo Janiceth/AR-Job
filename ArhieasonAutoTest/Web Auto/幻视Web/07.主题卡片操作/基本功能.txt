@@ -1,0 +1,21 @@
+*** Settings ***
+Suite Setup       Login_oltest    tianhua    tianhua
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Library           SendKeys
+Library           AutoItLibrary
+Resource          ../PublicKW/Login.txt
+Resource          ../PublicRC/Comment_Home.txt
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicKW/CommentKW.txt
+Resource          ../PublicKW/基本操作.txt
+
+*** Test Cases ***
+01.预览
+    点击    xPath=//*[@id="mainNode"]/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/a[1]
+
+02.三角菜单测试
+
+03.分析
+
+04.发布

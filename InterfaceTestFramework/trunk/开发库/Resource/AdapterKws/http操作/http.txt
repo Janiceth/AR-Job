@@ -1,0 +1,65 @@
+*** Settings ***
+Library           String
+Library           Collections
+Library           RequestsLibrary
+Library           MongoDBLibrary
+
+*** Keywords ***
+创建Session
+    [Arguments]    ${url}    ${params}=
+    #创建session
+    ${word}    Split String    ${url}    /
+    Log Many    ${word}
+    ${length}    Get Length    ${word}
+    ${pattern}    Set Variable    .*?:\/\/.*?/
+    ${pattern}    Run Keyword IF    ${length}>3    Set Variable    .*?:\/\/.*?/
+    ...    ELSE    Set Variable    .*?:\/\/.*
+    ${list_match}    Get Regexp Matches    ${url}    ${pattern}
+    ${server}    Strip String    ${list_match[0]}    characters=/
+    Log    ${server}
+    ${session_name}    Generate Random String
+    ${session}    RequestsLibrary.Create Session    ${session_name}    ${server}
+    分离url    ${url}
+    [Return]    ${session_name}
+
+发送GET请求
+    [Arguments]    ${session_name}    ${url}=/    ${params}=    ${headers}=
+    #发送GET请求
+    @{split_url}    分离url    ${url}
+    Log    @{split_url}[1]
+    Log    ${params}
+    ${result}    RequestsLibrary.Get Request    ${session_name}    @{split_url}[1]    ${headers}    ${params}
+    Run Keyword And Continue On Failure    Log    ${result.content}
+    [Return]    ${result}
+
+分离url
+    [Arguments]    ${url}
+    #将url分离成两部分
+    ${word}    Split String    ${url}    /
+    Log Many    ${word}
+    ${length}    Get Length    ${word}
+    ${pattern}    Set Variable    .*?:\/\/.*?/
+    ${pattern}    Run Keyword IF    ${length}>3    Set Variable    .*?:\/\/.*?/
+    ...    ELSE    Set Variable    .*?:\/\/.*
+    ${list_match}    Get Regexp Matches    ${url}    ${pattern}
+    ${server}    Strip String    ${list_match[0]}    characters=/
+    ${server_length}    Get Length    ${server}
+    ${url_length}    Get Length    ${url}
+    ${houzhui}    Get Sub String    ${url}    ${server_length}    ${url_length}
+    Log    ${houzhui}
+    [Return]    ${server}    ${houzhui}
+
+删除Session
+    [Arguments]    ${session_name}
+    #删除Session
+    Delete All Sessions
+
+发送POST请求
+    [Arguments]    ${session_name}    ${url}=/    ${params}=    ${headers}=
+    #发送POST请求
+    @{split_url}    分离url    ${url}
+    Log    @{split_url}[1]
+    Log    ${params}
+    ${result}    RequestsLibrary.Post Request    ${session_name}    @{split_url}[1]    \    ${params}    ${headers}
+    Run Keyword And Continue On Failure    Log    ${result.content}
+    [Return]    ${result}

@@ -1,0 +1,10 @@
+*** Settings ***
+Resource          ../../../AdapterKws/Http操作/http.txt
+Resource          ../../../CommonKws/http接口.txt
+
+*** Keywords ***
+获取APP列表
+    [Arguments]    ${url}
+    ${session}    创建Session    ${url}
+    &{params}    Create Dictionary    app_id=57ece50e80ca17000764b4c8
+    发送GET请求    ${session}    ${url}    params=${params}

@@ -1,0 +1,24 @@
+*** Keywords ***
+设置
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_menu_set
+    [Return]    ${locator}
+
+帮助
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_menu_help
+    [Return]    ${locator}
+
+识别相册图片
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_menu_import_pic
+    [Return]    ${locator}
+
+发现
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_menu_discover
+    [Return]    ${locator}
+
+关闭按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/ib_frag_menu_menu
+    [Return]    ${locator}
+
+展开按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_tip_menu
+    [Return]    ${locator}

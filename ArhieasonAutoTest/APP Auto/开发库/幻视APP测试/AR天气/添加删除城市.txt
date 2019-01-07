@@ -1,0 +1,17 @@
+*** Settings ***
+Suite Setup       测试套初始化
+Suite Teardown    测试套清理
+Resource          ../../Resource/FeatureKws/幻视APP/_幻视APP.robot
+
+*** Variables ***
+
+*** Test Cases ***
+搜索添加城市
+
+热门城市添加
+
+删除城市
+
+取消删除城市
+
+城市排序

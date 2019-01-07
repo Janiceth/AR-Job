@@ -1,0 +1,13 @@
+*** Keywords ***
+开启未知探索
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_tip_camera_click
+    [Return]    ${locator}
+
+消息按钮
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/iv_frag_tip_message
+    [Return]    ${locator}
+
+AR天气入口
+    Comment    ${locator}=    Set Variable    id=com.idealsee.yixun:id/rl_frag_tip_weather
+    ${locator}=    Set Variable    id=com.idealsee.yixun:id/tv_frag_tip_weather_wave_3
+    [Return]    ${locator}

@@ -1,0 +1,11 @@
+*** Settings ***
+Resource          ../../Resource/CommonKws/common.txt
+
+*** Test Cases ***
+测试例子1
+    #Example1:    test
+    log    Example1：
+    : FOR    ${i}    IN    1    2    3
+    \    log    'i'=${i}
+    log    test
+    \    ${OUTPUT_DIR}    "阿萨德刚"

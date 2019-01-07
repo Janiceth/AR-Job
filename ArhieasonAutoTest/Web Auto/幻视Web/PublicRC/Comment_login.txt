@@ -1,0 +1,11 @@
+*** Variables ***
+${Login_33_URL}    http://oltest.yixun.idealsee.com/web/user/login    #33登录地址
+${Login_oltest_URL}    http://oltest.yixun.idealsee.com/web/resource    #oltest登录地址
+${Login_yixun_URL}    http://yixun.arhieason.com/web/user/login    #yixun登录地址
+${Account}        liqiong    #测试账号
+${Password}       liqiong    #测试账号的密码
+${Login_account}    //*[@id="editorForm"]/div[3]/div[2]/div/input    # 登录账号输入框locator
+${Login_password}    //*[@id="editorForm"]/div[3]/div[3]/div/input    # 登录界面密码输入框locator
+${loginBottun}    //*[@id="editorForm"]//button    #点击登录按钮
+${EnterPassword}    xpath=//div[text()='请输入密码']    #弹出提示：请输入密码
+${UserNotExist}    xpath=//div[text()='登录用户不存在']    #弹出提示：登录用户不存在

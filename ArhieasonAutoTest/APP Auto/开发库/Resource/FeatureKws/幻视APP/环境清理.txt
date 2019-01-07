@@ -1,0 +1,20 @@
+*** Settings ***
+Resource          resource_load.txt
+
+*** Keywords ***
+测试套清理
+    [Arguments]    @{devices}
+    : FOR    ${device}    IN    @{devices}
+    \    提取logcat日志    ${device.udid}    ${device.caselogcatfile}    ${False}
+    \    清除设备日志    ${device.udid}
+    : FOR    ${device}    IN    @{devices}
+    \    关闭AppiumServer    ${device.serverport}
+    Run    taskkill /f /im node.exe
+    Run    taskkill /f /im adb.exe
+
+测试脚本清理
+    [Arguments]    @{devices}
+    Close Application
+    : FOR    ${device}    IN    @{devices}
+    \    提取logcat日志    ${device.udid}    ${device.caselogcatfile}
+    \    清除设备日志    ${device.udid}

@@ -1,0 +1,9 @@
+*** Settings ***
+Library           String
+Library           Collections
+Library           RequestsLibrary
+
+*** Keywords ***
+Step
+    [Arguments]    ${message}
+    Log    ${message}
