@@ -1,0 +1,1065 @@
+{
+	"variables": [],
+	"info": {
+		"name": "webar",
+		"_postman_id": "22cbe1e4-75a7-e393-1390-30f99fd620ba",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "web",
+			"description": "",
+			"item": [
+				{
+					"name": "主题-相似度",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/topic/similar",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"md5\":\"c4a9361ace597361b6943a5e7f330798.jpg\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "主题-添加",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/topic",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ar_md5\":\"c4a9361ace597361b6943a5e7f330798.jpg\",\n\t\"topic_name\":\"11234\",\n\t\"category_id\":\"5b1507fe0e68a5000754f315\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "主题-删除",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/topic/\"c4a9361ace597361b6943a5e7f330798.jpg",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"topic_id\":\"c4a9361ace597361b6943a5e7f330798.jpg\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://{{url}}:{{port}}/web/user/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"var token = jsonData.data.access_token;",
+									"console.log(token)",
+									"pm.environment.set(\"token\", token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"ar_test\",\n\t\"pwd\": \"ar2018\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://{{url}}:{{port}}/web/user/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"token\", \"\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/user/login",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"huangxing\",\n\t\"pwd\": \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "公告和帐号到期提醒",
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/notice",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"huangxing\",\n\t\"pwd\": \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-数量",
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/news/latest/count",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"huangxing\",\n\t\"pwd\": \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-列表",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/webar/news/list?news_type=2",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"webar",
+								"news",
+								"list"
+							],
+							"query": [
+								{
+									"key": "news_type",
+									"value": "2",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"huangxing\",\n\t\"pwd\": \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/webar/news/list?news_type=1",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"webar",
+								"news",
+								"list"
+							],
+							"query": [
+								{
+									"key": "news_type",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"huangxing\",\n\t\"pwd\": \"123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://{{url}}:{{port}}/web/user/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"var token = jsonData.data.access_token;",
+									"console.log(token)",
+									"pm.environment.set(\"token\", token);",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/webar/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"account\":\"ar_test\",\n  \"pwd\": \"ar2018\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "common",
+			"description": "",
+			"item": [
+				{
+					"name": "通用上传",
+					"request": {
+						"url": "http://{{url}}:{{port}}/common/upload",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file",
+									"src": "29112306bf72382f84e640e.jpg"
+								},
+								{
+									"key": "file",
+									"value": "",
+									"description": "",
+									"type": "file",
+									"disabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "通用上传 copy",
+					"request": {
+						"url": "http://{{url}}:{{port}}/common/upload",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "file",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"description": "",
+			"item": [
+				{
+					"name": "admin用户登录",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"var token = jsonData.data.access_token;",
+									"console.log(token)",
+									"pm.environment.set(\"token\", token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account\":\"admin\",\n\t\"pwd\": \"admin123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "系统公告-创建",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/notice",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": 1527045548,\n\t\"title\": \"title1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "系统公告-列表",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/admin/notice?search_key=",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"admin",
+								"notice"
+							],
+							"query": [
+								{
+									"key": "search_key",
+									"value": "",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": \"1527045548\",\n\t\"title\": \"test1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "系统公告-详情",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/notice/5b04e2bdd9d74d36e50b3f4f",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": \"1527045548\",\n\t\"title\": \"test1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "系统公告-删除",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/notice/5b04e2bdd9d74d36e50b3f4f",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": \"1527045548\",\n\t\"title\": \"test1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-创建",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/news",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"测试消息推送表1\",\n\t\"title\": \"测试1\",\n\t\"news_type\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-列表",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/admin/news",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"admin",
+								"news"
+							],
+							"query": [
+								{
+									"key": "search_key",
+									"value": "title2",
+									"equals": true,
+									"description": "",
+									"disabled": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": 1527045548,\n\t\"title\": \"title1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-详情",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/news/5b0509dfd9d74d65fbb9241c",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"content1\",\n\t\"notice_expiration_time\": 1527045548,\n\t\"title\": \"title1\",\n\t\"notice_period\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "消息-删除",
+					"request": {
+						"url": "http://{{url}}:{{port}}/admin/news/5b065b34d9d74d602b969bdc",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"description": "",
+			"item": [
+				{
+					"name": "test-redis",
+					"request": {
+						"url": "http://{{url}}:{{port}}/test/redis",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "sfsfsfsdfs"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "test-mongo-get",
+					"request": {
+						"url": "http://{{url}}:{{port}}/test/mongo",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "dsafsdfsdfsdfs",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer dfsadfasdfsadf",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "sfsfsfsdfs"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "test-mongo-post",
+					"request": {
+						"url": "http://{{url}}:{{port}}/test/mongo",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"post\":\"test\"},{\"post1\":\"test1\"}]"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "test-mongo-delete",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/test/mongo?is_many=1",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"test",
+								"mongo"
+							],
+							"query": [
+								{
+									"key": "is_many",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"post\":\"test\"},{\"post1\":\"test1\"}]"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "test-mongo-put",
+					"request": {
+						"url": "http://{{url}}:{{port}}/test/mongo",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"post\":\"huangxing123\", \"name\": \"huangxing\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "echo",
+					"request": {
+						"url": "http://{{url}}:{{port}}/api/echo",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "sfsfsfsdfs"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api",
+			"description": "",
+			"item": [
+				{
+					"name": "主题-数据下载",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/api/resource/animation?md5=741fd475eb11e9e5e3e77f9ce149a4d5.jpg&webar_app_id={{webar_app_id}}",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"resource",
+								"animation"
+							],
+							"query": [
+								{
+									"key": "md5",
+									"value": "741fd475eb11e9e5e3e77f9ce149a4d5.jpg",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "webar_app_id",
+									"value": "{{webar_app_id}}",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "file",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "主题-识别",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/api/resource/search?webar_app_id={{webar_app_id}}",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"resource",
+								"search"
+							],
+							"query": [
+								{
+									"key": "webar_app_id",
+									"value": "{{webar_app_id}}",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pic",
+									"description": "",
+									"type": "file",
+									"src": "1124.jpg"
+								},
+								{
+									"key": "lon",
+									"value": "104.029",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "30.49",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "webar_app_id  check",
+					"request": {
+						"url": {
+							"raw": "http://{{url}}:{{port}}/api/app/check/377501b690434ca8bd582d81ec40d1ba",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"app",
+								"check",
+								"377501b690434ca8bd582d81ec40d1ba"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"equals": true,
+									"description": "",
+									"disabled": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pic",
+									"description": "",
+									"type": "file",
+									"src": "1125.jpg"
+								},
+								{
+									"key": "lon",
+									"value": "104.029",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "30.49",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
